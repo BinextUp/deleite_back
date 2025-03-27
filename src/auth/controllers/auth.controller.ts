@@ -1,15 +1,15 @@
 import { Controller, Post, Body, HttpCode, HttpStatus, Get, Request, UseGuards } from '@nestjs/common';
-import { AuthService } from './auth.service';
-import { CreateAuthUserDto } from './dto/create.auth.user.dto';
+import { AuthService } from '../services/auth.service';
+import { CreateAuthUserDto } from '../dto/create.auth.user.dto';
 //import { AuthGuard } from './guads/auth.guard';
-import { Public } from './decorators/public.decorator';
-import { AuthUserDto } from './dto/auth.user.dto';
+import { Public } from '../decorators/public.decorator';
+import { AuthUserDto } from '../dto/auth.user.dto';
 //import { RolesGuard } from './guads/roles.guard';
 //import { Roles } from './decorators/roles.decorator';
-import { Rol } from '../utils/enums/rol.enum';
-import { Auth } from './decorators/auth.decorator';
-import { UserActive } from '../utils/decorators/user-active.decorator';
-import { UserActiveInterface } from '../utils/interfaces/user-active.interface';
+import { Rol } from '../../utils/enums/rol.enum';
+import { Auth } from '../decorators/auth.decorator';
+import { UserActive } from '../../utils/decorators/user-active.decorator';
+import { UserActiveInterface } from '../../utils/interfaces/user-active.interface';
 
 
 

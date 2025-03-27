@@ -1,10 +1,10 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe } from '@nestjs/common';
-import { ClientsService } from './clients.service';
-import { CreateClientDto } from './dto/create-client.dto';
-import { UpdateClientDto } from './dto/update-client.dto';
-import { Auth } from '../auth/decorators/auth.decorator';
-import { Rol } from '../utils/enums/rol.enum';
-import { Client } from './entities/client.entity';
+import { ClientsService } from '../services/clients.service';
+import { CreateClientDto } from '../dto/create-client.dto';
+import { UpdateClientDto } from '../dto/update-client.dto';
+import { Auth } from '../../auth/decorators/auth.decorator';
+import { Rol } from '../../utils/enums/rol.enum';
+import { Client } from '../entities/client.entity';
 
 @Controller('clients')
 @Auth(Rol.USER)

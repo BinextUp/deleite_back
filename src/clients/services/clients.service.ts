@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { CreateClientDto } from './dto/create-client.dto';
-import { UpdateClientDto } from './dto/update-client.dto';
-import { Client } from './entities/client.entity';
+import { CreateClientDto } from '../dto/create-client.dto';
+import { UpdateClientDto } from '../dto/update-client.dto';
+import { Client } from '../entities/client.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { UsersService } from 'src/users/users.service';
+import { UsersService } from 'src/users/services/users.service';
 
 @Injectable()
 export class ClientsService {
