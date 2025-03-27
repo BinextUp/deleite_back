@@ -6,6 +6,8 @@ import { PaymentsModule } from './payments/payments.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { ClientsModule } from './clients/clients.module';
+import { ProductsModule } from './produts/products.module';
+import { CategoriesModule } from './categories/categories.module';
 
 @Module({
   imports: [
@@ -20,6 +22,13 @@ import { ClientsModule } from './clients/clients.module';
     logging: true,
    
   }),
-  TasksModule, AuthModule, UsersModule, PaymentsModule, ClientsModule]
+  TasksModule,
+  AuthModule, 
+  UsersModule, 
+  PaymentsModule, 
+  ClientsModule, 
+  ProductsModule, 
+  CategoriesModule
+  ]
 })
 export class AppModule {}
