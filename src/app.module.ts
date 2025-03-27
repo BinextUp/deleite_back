@@ -17,9 +17,9 @@ import { ClientsModule } from './clients/clients.module';
     url: process.env.SUPABASE_BASE_DATABASE_URL,
     autoLoadEntities: true,
     synchronize: true,
+    logging: true,
    
-  }),TasksModule, AuthModule, UsersModule, PaymentsModule, ClientsModule],
-  controllers: [],
-  providers: [],
+  }),
+  TasksModule, AuthModule, UsersModule, PaymentsModule, ClientsModule]
 })
 export class AppModule {}

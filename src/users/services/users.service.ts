@@ -30,12 +30,7 @@ export class UsersService {
         return this.userRepository.save(user);
     }
     async findByEmail(email: string): Promise<User | null> {
-        console.log(email);
-        //const user = await this.userRepository.findOne({ where: { email:email }, });
-        const user = this.userRepository
-        .createQueryBuilder("user")
-        .where("user.email = :email", { email: email })
-        .getOne();
+        const user = await this.userRepository.findOneBy({ email });
         return user;
     }
 

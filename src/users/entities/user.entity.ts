@@ -24,7 +24,4 @@ export class User {
 
     @OneToOne(() => Client,(client) => client.user)
     client: Client;
-
-    @DeleteDateColumn({type: 'timestamp', default: () => 'CURRENT_TIMESTAMP'})
-    deletedAt: Date;
 }

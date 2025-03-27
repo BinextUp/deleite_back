@@ -11,8 +11,6 @@ export class AuthService {
 
     async signIn(email: string, password: string): Promise<{ token: string }> {
         const user = await this.usersService.findByEmail(email);
-        console.log(user);
-
         if (!user) {
             throw new UnauthorizedException('Usuario no encontrado');
         }

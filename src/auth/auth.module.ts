@@ -16,7 +16,8 @@ import { AuthGuard } from './guads/auth.guard';
   }),],
   controllers: [AuthController],
   providers: [
-    AuthService , {
+    AuthService , 
+    {
     provide: APP_GUARD,
     useClass: AuthGuard,
   }, ],

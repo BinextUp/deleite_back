@@ -23,6 +23,4 @@ export class Client {
     @JoinColumn({name: 'user_id'})
     user: User;
     
-    @DeleteDateColumn({type: 'timestamp', default: () => 'CURRENT_TIMESTAMP'})
-    deletedAt: Date;
 }
