@@ -21,7 +21,10 @@ export class Product {
     @Column({ type: 'int' })
     stock: number;
 
-    @ManyToOne(() => Category, (category) => category.products)
-    @JoinColumn({ name: 'category_id' })
+    @ManyToOne(() => Category)
+    @JoinColumn({ name: 'category_id',referencedColumnName: 'id' })
     category: Category;
+
+    @Column({ type: 'int' })
+    category_id: number;
 }

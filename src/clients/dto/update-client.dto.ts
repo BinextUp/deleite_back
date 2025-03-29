@@ -3,6 +3,7 @@ import { CreateClientDto } from './create-client.dto';
 import { IsInt, IsString,IsOptional } from 'class-validator';
 
 export class UpdateClientDto extends PartialType(CreateClientDto) {
+
     @IsInt()
     id: number;
     @IsString()
@@ -16,4 +17,5 @@ export class UpdateClientDto extends PartialType(CreateClientDto) {
     @IsInt()
     @IsOptional()
     user_id: number;
+    
 }

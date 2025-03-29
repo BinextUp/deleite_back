@@ -4,6 +4,7 @@ import { ValidationPipe } from '@nestjs/common';
 import * as morgan from 'morgan';
 import 'reflect-metadata';
 import { CORS } from './utils/cors/cors';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -16,6 +17,17 @@ async function bootstrap() {
     forbidNonWhitelisted: true,
   }));
   app.use(morgan('dev'));
+
+  //TODO: documentacion de la API en swagger
+  const config = new DocumentBuilder()
+    .setTitle('Documentacion de la API Deleite App')
+    .setDescription('Documentacion de la API Deleite App')
+    .setVersion('1.0')
+    .addTag('Deleite App')
+    .build();
+  const documentFactory = () => SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('api/v1', app, documentFactory);
+  
   await app.listen(Number(process.env.PORT_APP) || 3000);
 }
 bootstrap();
