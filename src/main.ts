@@ -23,10 +23,16 @@ async function bootstrap() {
     .setTitle('Documentacion de la API Deleite App')
     .setDescription('Documentacion de la API Deleite App')
     .setVersion('1.0')
-    .addTag('Deleite App')
+    .addBearerAuth()
     .build();
   const documentFactory = () => SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api/v1', app, documentFactory);
+  SwaggerModule.setup('docs', app, documentFactory, {
+    swaggerOptions: {
+      docExpansion: 'list',
+      filter: true,
+      tagsSorter: 'alpha',
+    },
+  });
   
   await app.listen(Number(process.env.PORT_APP) || 3000);
 }

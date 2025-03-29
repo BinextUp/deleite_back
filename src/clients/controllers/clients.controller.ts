@@ -5,7 +5,9 @@ import { UpdateClientDto } from '../dto/update-client.dto';
 import { Auth } from '../../auth/decorators/auth.decorator';
 import { Rol } from '../../utils/enums/rol.enum';
 import { Client } from '../entities/client.entity';
+import { ApiBearerAuth } from '@nestjs/swagger';
 
+@ApiBearerAuth()
 @Controller('clients')
 @Auth(Rol.USER)
 export class ClientsController {

@@ -3,6 +3,7 @@ import { CreateCategoryDto } from './create-category.dto';
 import { IsInt, IsString } from "class-validator";
 
 export class UpdateCategoryDto extends PartialType(CreateCategoryDto) {
+    
     @IsInt()
     id: number;
     @IsString()
@@ -11,4 +12,5 @@ export class UpdateCategoryDto extends PartialType(CreateCategoryDto) {
     description: string;
     @IsString()
     image: string;
+
 }

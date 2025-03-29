@@ -7,6 +7,7 @@ import { Rol } from '../../utils/enums/rol.enum';
 import { Auth } from '../decorators/auth.decorator';
 import { UserActive } from '../../utils/decorators/user-active.decorator';
 import { UserActiveInterface } from '../../utils/interfaces/user-active.interface';
+import { ApiBearerAuth } from '@nestjs/swagger';
 
 
 
@@ -21,6 +22,7 @@ export class AuthController {
       return await this.authService.signIn(authUser.email, authUser.password);
     }
   
+    @ApiBearerAuth()
     @Auth(Rol.USER)
     @Get('profile')
     //TODO:estoy usando el decorador UserActive para obtener el usuario autenticado, Estos personalizado

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreateCategoryDto } from '../dto/create-category.dto';
 import { UpdateCategoryDto } from '../dto/update-category.dto';
 import { Category } from '../entities/category.entity';
@@ -19,17 +19,23 @@ export class CategoriesService {
     return this.categoryRepository.find();
   }
 
-  async findOne(id: number): Promise<Category | null> {
-    return this.categoryRepository.findOne({ where: { id } });
+  async findOne(id: number): Promise<Category> {
+
+    const category = await this.categoryRepository.findOne({ where: { id } });
+    if(!category) {
+      throw new BadRequestException('Categoría no encontrada');
+    }
+    return category;
   }
 
-  async update(id: number, updateCategoryDto: UpdateCategoryDto): Promise<Category | null> {
-    return this.categoryRepository.update(id, updateCategoryDto).then(() => this.findOne(id));
+  async update(id: number, updateCategoryDto: UpdateCategoryDto): Promise<Category> {
+    await this.findOne(id);
+    return await this.categoryRepository.update(id, updateCategoryDto).then(() => this.findOne(id));
   }
 
   async remove(id: number): Promise<void> {
+    await this.findOne(id);
     await this.categoryRepository.delete(id);
   }
-
 
 }
