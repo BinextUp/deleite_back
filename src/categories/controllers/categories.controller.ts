@@ -9,6 +9,7 @@ import { ApiBearerAuth } from '@nestjs/swagger';
 
 @ApiBearerAuth()
 @Controller('categories')
+//TODO: implementar autenticacion, esto parte del backend lo debria hacer el administrador
 @Auth(Rol.USER)
 export class CategoriesController {
   constructor(private readonly categoriesService: CategoriesService) {}
