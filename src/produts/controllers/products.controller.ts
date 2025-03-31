@@ -37,4 +37,9 @@ export class ProductsController {
   remove(@Param('id', ParseIntPipe) id: number) {
     return this.productsService.remove(id);
   }
+
+  @Get('api-products')
+  async getApiProducts(): Promise<any> {
+    return this.productsService.getApiProducts();
+  }
 }

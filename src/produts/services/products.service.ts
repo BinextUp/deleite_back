@@ -1,17 +1,20 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
 import { CreateProductDto } from '../dto/create-product.dto';
 import { UpdateProductDto } from '../dto/update-product.dto';
 import { Product } from '../entities/product.entity';
 import { Repository } from 'typeorm';
-import { InjectRepository } from '@nestjs/typeorm';
-import { CategoriesService } from 'src/categories/services/categories.service';
+import { CategoriesService } from '../../categories/services/categories.service';
+import { ApiProductService } from '../../utils/API/services/api-product.service';
+
 
 @Injectable()
 export class ProductsService {
   constructor(
     @InjectRepository(Product)
     private readonly productRepository: Repository<Product>,
-    private readonly categoriesService: CategoriesService
+    private readonly categoriesService: CategoriesService,
+    private readonly apiProductService: ApiProductService
   ) {}
 
   async create(createProductDto: CreateProductDto): Promise<Product> {
@@ -49,6 +52,9 @@ export class ProductsService {
     await this.findOne(id);
     await this.productRepository.delete(id);
   }
-
+ 
+  async getApiProducts(): Promise<any> {
+    return this.apiProductService.ApiGetProducts();
+  }
 
 }

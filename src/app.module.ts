@@ -8,7 +8,9 @@ import { ConfigModule } from '@nestjs/config';
 import { ClientsModule } from './clients/clients.module';
 import { ProductsModule } from './produts/products.module';
 import { CategoriesModule } from './categories/categories.module';
+import { ApiModule } from './utils/API/api.module';
 import database from './utils/config/root-typeorm';
+
 
 @Module({
   imports: [
@@ -23,6 +25,8 @@ import database from './utils/config/root-typeorm';
     ClientsModule, 
     ProductsModule, 
     CategoriesModule,
-  ]
+    ApiModule,
+  ],
+  providers: []
 })
 export class AppModule {}
