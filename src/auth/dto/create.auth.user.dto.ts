@@ -1,4 +1,4 @@
-import { IsString, IsEmail } from "class-validator";
+import { IsString, IsEmail, IsBoolean } from "class-validator";
 import { Transform } from "class-transformer";
 
 export class CreateAuthUserDto {
@@ -11,5 +11,7 @@ export class CreateAuthUserDto {
     @IsString()
     @Transform(({ value }) => value.trim())
     password: string;
+    @IsBoolean()
+    termins: boolean;
 
 }

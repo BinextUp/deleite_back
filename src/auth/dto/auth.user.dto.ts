@@ -1,4 +1,4 @@
-import { IsString, IsEmail } from "class-validator";
+import { IsString, IsEmail, IsBoolean } from "class-validator";
 import { Transform } from "class-transformer";
 
 export class AuthUserDto {

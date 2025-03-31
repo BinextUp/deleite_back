@@ -18,6 +18,9 @@ export class UpdateUserDto extends PartialType(CreateUserDto) {
     @IsBoolean()
     @IsOptional()
     isActive: boolean;
+    @IsBoolean()
+    @IsOptional()
+    termins: boolean;
     @IsString()
     @IsOptional()
     role: Rol;

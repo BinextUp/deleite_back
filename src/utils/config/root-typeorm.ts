@@ -8,6 +8,6 @@ export default registerAs(
         url: process.env.SUPABASE_BASE_DATABASE_URL,
         autoLoadEntities: true,
         synchronize: true,
-        logging: true,
+        //logging: true,
     }),
   );
