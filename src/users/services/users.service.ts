@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { User } from '../entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -13,28 +13,45 @@ export class UsersService {
         return this.userRepository.find();
     }
 
-    async getUser(id: number): Promise<User | null> {
-        return this.userRepository.findOne({ where: { id } });
-    }
-
-    async updateUser(id: number, user: User): Promise<User | null> {
-        return this.userRepository.update(id , { ...user }).then(() => this.getUser(id));
-    }
-
-    async createUser(user: CreateUserDto): Promise<User> {
-        const userExists = await this.findByEmail(user.email);
-        if (userExists) {
-            throw new Error('Este Email ya existe');
+    async getUser(id: number): Promise<User> {
+        const user = await this.userRepository.findOne({ where: { id } });
+        if (!user) {
+            throw new BadRequestException('Usuario no encontrado');
         }
-        user.password = await hashPassword(user.password);
-        return this.userRepository.save(user);
-    }
-    async findByEmail(email: string): Promise<User | null> {
-        const user = await this.userRepository.findOneBy({ email });
         return user;
     }
 
+    async updateUser(id: number, user: User): Promise<User> {
+        await this.getUser(id);
+        return await this.userRepository.update(id , { ...user }).then(() => this.getUser(id));
+    }
+
+    async createUser(user: CreateUserDto): Promise<User> {
+        await this.findByEmail(user.email, false);
+        user.password = await hashPassword(user.password);
+        const newUser = await this.userRepository.save(user);
+        if(!newUser) {
+            throw new BadRequestException('Error al crear el usuario');
+        }
+        return newUser;
+    }
+    async findByEmail(email: string, login_create?: boolean): Promise<User | null> {
+        const user = await this.userRepository.findOneBy({ email });
+        if(login_create && user) {
+            return user;
+        }
+        if(login_create && !user) {
+            throw new BadRequestException('Usuario no encontrado');
+        }
+        if(!login_create && user) {
+            throw new BadRequestException('Este Email ya existe');
+        }
+        return null;
+       
+    }
+
     async deleteUser(id: number): Promise<void> {
+        await this.getUser(id);
         await this.userRepository.delete(id);
     }
 }

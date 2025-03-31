@@ -10,7 +10,7 @@ export class AuthService {
     constructor(private readonly usersService: UsersService, private readonly jwtService: JwtService) {}
 
     async signIn(email: string, password: string): Promise<{ token: string }> {
-        const user = await this.usersService.findByEmail(email);
+        const user = await this.usersService.findByEmail(email, true);
         if (!user) {
             throw new UnauthorizedException('Usuario no encontrado');
         }

@@ -14,7 +14,7 @@ export class UsersController {
     }
 
     @Get(':id')
-    async getUser(@Param('id') id: number): Promise<User | null> {
+    async getUser(@Param('id') id: number): Promise<User> {
         return this.usersService.getUser(id);
     }
 
@@ -25,7 +25,7 @@ export class UsersController {
 
 
     @Patch('update/:id')
-    async updateUser(@Param('id') id: number, @Body() user: UpdateUserDto): Promise<User | null> {
+    async updateUser(@Param('id') id: number, @Body() user: UpdateUserDto): Promise<User> {
         return this.usersService.updateUser(id, user);
     }
 

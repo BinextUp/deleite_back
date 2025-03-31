@@ -6,6 +6,8 @@ import { Auth } from '../../auth/decorators/auth.decorator';
 import { Rol } from '../../utils/enums/rol.enum';
 import { Client } from '../entities/client.entity';
 import { ApiBearerAuth } from '@nestjs/swagger';
+import { UserActive } from '../../utils/decorators/user-active.decorator';
+import { UserActiveInterface } from '../../utils/interfaces/user-active.interface';
 
 @ApiBearerAuth()
 @Controller('clients')
@@ -14,8 +16,8 @@ export class ClientsController {
   constructor(private readonly clientsService: ClientsService) {}
 
   @Post('create')
-  async create(@Body() createClientDto: CreateClientDto): Promise<Client> {
-    return this.clientsService.create(createClientDto);
+  async create(@Body() createClientDto: CreateClientDto, @UserActive() userActive: UserActiveInterface): Promise<Client> {
+    return this.clientsService.create(createClientDto, userActive);
   }
 
   @Get('all')
@@ -24,8 +26,12 @@ export class ClientsController {
   }
 
   @Get('search/:id')
-  async findOne(@Param('id', ParseIntPipe) id: number): Promise<Client | null> {
+  async findOne(@Param('id', ParseIntPipe) id: number): Promise<Client> {
     return this.clientsService.findOne(id);
+  }
+  @Get('searchByUserId')
+  async findOneByUserId(@UserActive() userActive: UserActiveInterface): Promise<Client> {
+    return this.clientsService.findOneByUserId(userActive.id);
   }
 
   @Patch('update/:id')

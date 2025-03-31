@@ -5,6 +5,7 @@ import { IsInt, IsString,IsOptional } from 'class-validator';
 export class UpdateClientDto extends PartialType(CreateClientDto) {
 
     @IsInt()
+    @IsOptional()
     id: number;
     @IsString()
     name: string;

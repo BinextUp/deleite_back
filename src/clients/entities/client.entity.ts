@@ -20,7 +20,9 @@ export class Client {
     phone: string;
     
     @OneToOne(() => User)
-    @JoinColumn({name: 'user_id'})
+    @JoinColumn({name: 'user_id', referencedColumnName: 'id'})
     user: User;
     
+    @Column({type: 'int'})
+    user_id: number;
 }

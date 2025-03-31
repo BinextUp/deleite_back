@@ -10,7 +10,6 @@ export class CreateClientDto {
     @IsString()
     phone: string;
     @IsInt()
-    user_id: number;
     @IsOptional()
-    user?: User;
+    user_id: number;
 }
