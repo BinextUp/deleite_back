@@ -6,6 +6,7 @@ import { Product } from '../entities/product.entity';
 import { Repository } from 'typeorm';
 import { CategoriesService } from '../../categories/services/categories.service';
 import { ApiProductService } from '../../utils/API/services/api-product.service';
+import { ApiDollarService } from '../../utils/API/services/api-dollar.service';
 
 
 @Injectable()
@@ -14,6 +15,7 @@ export class ProductsService {
     @InjectRepository(Product)
     private readonly productRepository: Repository<Product>,
     private readonly categoriesService: CategoriesService,
+    private readonly apiDollarService: ApiDollarService,
     private readonly apiProductService: ApiProductService
   ) {}
 
@@ -55,6 +57,10 @@ export class ProductsService {
  
   async getApiProducts(): Promise<any> {
     return this.apiProductService.ApiGetProducts();
+  }
+
+  async getApiDollars(): Promise<any> {
+    return this.apiDollarService.ApiGetDollars();
   }
 
 }

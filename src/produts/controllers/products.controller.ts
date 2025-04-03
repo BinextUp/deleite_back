@@ -42,4 +42,9 @@ export class ProductsController {
   async getApiProducts(): Promise<any> {
     return this.productsService.getApiProducts();
   }
+
+  @Get('api-dollars')
+  async getApiDollars(): Promise<any> {
+    return this.productsService.getApiDollars();
+  }
 }
