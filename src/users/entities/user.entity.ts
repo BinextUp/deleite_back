@@ -1,6 +1,7 @@
 import { Client } from "src/clients/entities/client.entity";
 import { Rol } from "../../utils/enums/rol.enum";
-import { Entity, PrimaryGeneratedColumn, Column, DeleteDateColumn, OneToOne } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, DeleteDateColumn, OneToOne, OneToMany } from "typeorm";
+import { Cart } from "src/carts/entities/cart.entity";
 
 @Entity('users')
 export class User {

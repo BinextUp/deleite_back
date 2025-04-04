@@ -10,6 +10,7 @@ import { ProductsModule } from './produts/products.module';
 import { CategoriesModule } from './categories/categories.module';
 import { ApiModule } from './utils/API/api.module';
 import { WsModule } from './ws/ws.module';
+import { CartsModule } from './carts/carts.module';
 import database from './utils/config/root-typeorm';
 
 
@@ -28,6 +29,7 @@ import database from './utils/config/root-typeorm';
     CategoriesModule,
     ApiModule,
     WsModule,
+    CartsModule,
   ],
   providers: []
 })
