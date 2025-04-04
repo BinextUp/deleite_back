@@ -9,6 +9,7 @@ import { ClientsModule } from './clients/clients.module';
 import { ProductsModule } from './produts/products.module';
 import { CategoriesModule } from './categories/categories.module';
 import { ApiModule } from './utils/API/api.module';
+import { WsModule } from './ws/ws.module';
 import database from './utils/config/root-typeorm';
 
 
@@ -26,6 +27,7 @@ import database from './utils/config/root-typeorm';
     ProductsModule, 
     CategoriesModule,
     ApiModule,
+    WsModule,
   ],
   providers: []
 })
