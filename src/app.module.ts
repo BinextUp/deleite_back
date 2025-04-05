@@ -11,6 +11,8 @@ import { CategoriesModule } from './categories/categories.module';
 import { ApiModule } from './utils/API/api.module';
 import { WsModule } from './ws/ws.module';
 import { CartsModule } from './carts/carts.module';
+import { InvoicesModule } from './invoices/invoices.module';
+import { InvoiceDetailModule } from './invoice-detail/invoice-detail.module';
 import database from './utils/config/root-typeorm';
 
 
@@ -30,6 +32,8 @@ import database from './utils/config/root-typeorm';
     ApiModule,
     WsModule,
     CartsModule,
+    InvoicesModule,
+    InvoiceDetailModule,
   ],
   providers: []
 })

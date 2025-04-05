@@ -2,6 +2,7 @@ import { Client } from "src/clients/entities/client.entity";
 import { Rol } from "../../utils/enums/rol.enum";
 import { Entity, PrimaryGeneratedColumn, Column, OneToOne, OneToMany } from "typeorm";
 import { Cart } from "../../carts/entities/cart.entity";
+import { Invoice } from "src/invoices/entities/invoice.entity";
 
 @Entity('users')
 export class User {
@@ -31,4 +32,7 @@ export class User {
 
     @OneToMany(() => Cart, (cart) => cart.user) 
     carts: Cart[];
+
+    @OneToMany(() => Invoice, (invoice) => invoice.user)
+    invoices: Invoice[];
 }

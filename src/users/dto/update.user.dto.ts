@@ -4,6 +4,7 @@ import { IsBoolean, IsInt, IsOptional, IsString,IsEmail } from 'class-validator'
 import { Rol } from "../../utils/enums/rol.enum";
 import { Client } from "../../clients/entities/client.entity";
 import { Cart } from "../../carts/entities/cart.entity";
+import { Invoice } from "../../invoices/entities/invoice.entity";
 export class UpdateUserDto extends PartialType(CreateUserDto) {
     @IsInt()
     @IsOptional()
@@ -29,6 +30,8 @@ export class UpdateUserDto extends PartialType(CreateUserDto) {
     client: Client;
     @IsOptional()
     carts: Cart[];
+    @IsOptional()
+    invoices: Invoice[];
     @IsOptional()
     deletedAt: Date;
    
