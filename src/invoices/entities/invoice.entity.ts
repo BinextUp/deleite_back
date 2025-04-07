@@ -1,6 +1,8 @@
+import { PaymentMethod } from "src/payment-methods/entities/payment-method.entity";
 import { InvoiceDetail } from "../../invoice-detail/entities/invoice-detail.entity";
 import { User } from "src/users/entities/user.entity";
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+
 
 @Entity('invoices')
 export class Invoice {
@@ -19,8 +21,13 @@ export class Invoice {
     @Column({ type: 'decimal', precision: 10, scale: 2, default: 0 })
     descuento: number;
 
+    @ManyToOne(() => PaymentMethod, paymentMethod => paymentMethod.invoices)
+    @JoinColumn({name: 'paymentMethod_id', referencedColumnName: 'id'})
+    paymentMethod: PaymentMethod;
+
+    
     @Column({ type: 'int' })
-    metodoPago_id: number;
+    paymentMethod_id: number;
 
     @ManyToOne(() => User, user => user.invoices)
     @JoinColumn({name: 'user_id', referencedColumnName: 'id'})

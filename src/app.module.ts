@@ -1,9 +1,8 @@
 import { Module } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { TasksModule } from './tasks/tasks.module';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
-import { PaymentsModule } from './payments/payments.module';
-import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { ClientsModule } from './clients/clients.module';
 import { ProductsModule } from './produts/products.module';
@@ -13,6 +12,7 @@ import { WsModule } from './ws/ws.module';
 import { CartsModule } from './carts/carts.module';
 import { InvoicesModule } from './invoices/invoices.module';
 import { InvoiceDetailModule } from './invoice-detail/invoice-detail.module';
+import { PaymentMethodsModule } from './payment-methods/payment-methods.module';
 import database from './utils/config/root-typeorm';
 
 
@@ -25,7 +25,6 @@ import database from './utils/config/root-typeorm';
     TasksModule,
     AuthModule, 
     UsersModule, 
-    PaymentsModule, 
     ClientsModule, 
     ProductsModule, 
     CategoriesModule,
@@ -34,6 +33,7 @@ import database from './utils/config/root-typeorm';
     CartsModule,
     InvoicesModule,
     InvoiceDetailModule,
+    PaymentMethodsModule,
   ],
   providers: []
 })
