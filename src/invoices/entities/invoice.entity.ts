@@ -11,13 +11,16 @@ export class Invoice {
     fechaFactura: Date;
 
     @Column({ type: 'decimal', precision: 10, scale: 2 })
-    total: number;
+    precioNeto: number;
 
-    @Column({ type: 'varchar', length: 255 })
-    estado: string;
+    @Column({ type: 'decimal', precision: 10, scale: 2 })
+    iva: number;
 
-    @Column({ type: 'varchar', length: 255 })
-    metodoPago: string;
+    @Column({ type: 'decimal', precision: 10, scale: 2, default: 0 })
+    descuento: number;
+
+    @Column({ type: 'int' })
+    metodoPago_id: number;
 
     @ManyToOne(() => User, user => user.invoices)
     @JoinColumn({name: 'user_id', referencedColumnName: 'id'})
