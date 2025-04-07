@@ -3,7 +3,12 @@ import { UsersService } from '../services/users.service';
 import { User } from '../entities/user.entity';
 import { CreateUserDto } from '../dto/create.user.dto';
 import { UpdateUserDto } from '../dto/update.user.dto';
+import { ApiBearerAuth } from '@nestjs/swagger';
+import { Auth } from '../../auth/decorators/auth.decorator';
+import { Rol } from '../../utils/enums/rol.enum';
 
+@ApiBearerAuth()
+@Auth(Rol.USER)
 @Controller('users')
 export class UsersController {
     constructor(private readonly usersService: UsersService) {}
