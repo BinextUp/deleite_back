@@ -1,6 +1,6 @@
-import { PaymentMethod } from "src/payment-methods/entities/payment-method.entity";
+import { PaymentMethod } from "../../payment-methods/entities/payment-method.entity";
 import { InvoiceDetail } from "../../invoice-detail/entities/invoice-detail.entity";
-import { User } from "src/users/entities/user.entity";
+import { User } from "../../users/entities/user.entity";
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 
@@ -25,7 +25,6 @@ export class Invoice {
     @JoinColumn({name: 'paymentMethod_id', referencedColumnName: 'id'})
     paymentMethod: PaymentMethod;
 
-    
     @Column({ type: 'int' })
     paymentMethod_id: number;
 

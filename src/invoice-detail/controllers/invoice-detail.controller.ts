@@ -2,18 +2,19 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe } from 
 import { InvoiceDetailService } from '../services/invoice-detail.service';
 import { CreateInvoiceDetailDto } from '../dto/create-invoice-detail.dto';
 import { UpdateInvoiceDetailDto } from '../dto/update-invoice-detail.dto';
+import { InvoiceDetail } from '../entities/invoice-detail.entity';
 
 @Controller('invoice-detail')
 export class InvoiceDetailController {
   constructor(private readonly invoiceDetailService: InvoiceDetailService) {}
 
   @Post('create')
-  create(@Body() createInvoiceDetailDto: CreateInvoiceDetailDto) {
+  async create(@Body() createInvoiceDetailDto: CreateInvoiceDetailDto[]): Promise<InvoiceDetail[]> {
     return this.invoiceDetailService.create(createInvoiceDetailDto);
   }
 
   @Get('all')
-  findAll() {
+  async findAll(): Promise<InvoiceDetail[]> {
     return this.invoiceDetailService.findAll();
   }
 

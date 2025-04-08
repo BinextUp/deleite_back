@@ -12,7 +12,7 @@ export class PaymentMethod {
     @Column()
     description: string;
 
-    @Column()
+    @Column({type: 'varchar', length: 255 , nullable: true})
     icon: string;
 
     @Column({type: 'boolean', default: true})
