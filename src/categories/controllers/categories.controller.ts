@@ -2,15 +2,17 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe } from 
 import { CategoriesService } from '../services/categories.service';
 import { CreateCategoryDto } from '../dto/create-category.dto';
 import { UpdateCategoryDto } from '../dto/update-category.dto';
-import { Rol } from '../../utils/enums/rol.enum';
+//import { Rol } from '../../utils/enums/rol.enum';
 import { Category } from '../entities/category.entity';
-import { Auth } from '../../auth/decorators/auth.decorator';
-import { ApiBearerAuth } from '@nestjs/swagger';
+import { Public } from '../../auth/decorators/public.decorator';
+//import { Auth } from '../../auth/decorators/auth.decorator';
+//import { ApiBearerAuth } from '@nestjs/swagger';
 
-@ApiBearerAuth()
+//@ApiBearerAuth()
+@Public()
 @Controller('categories')
 //TODO: implementar autenticacion, esto parte del backend lo debria hacer el administrador
-@Auth(Rol.USER)
+//@Auth(Rol.USER)
 export class CategoriesController {
   constructor(private readonly categoriesService: CategoriesService) {}
 

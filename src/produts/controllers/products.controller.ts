@@ -1,14 +1,17 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe} from '@nestjs/common';
 import { ProductsService } from '../services/products.service';
 import { CreateProductDto } from '../dto/create-product.dto';
 import { UpdateProductDto } from '../dto/update-product.dto';
 import { Product } from '../entities/product.entity';
-import { ApiBearerAuth } from '@nestjs/swagger';
-import { Auth } from 'src/auth/decorators/auth.decorator';
-import { Rol } from 'src/utils/enums/rol.enum';
+import { Public } from '../../auth/decorators/public.decorator';
+//import { ApiBearerAuth } from '@nestjs/swagger';
+//import { Auth } from 'src/auth/decorators/auth.decorator';
+//import { Rol } from 'src/utils/enums/rol.enum';
 
-@ApiBearerAuth()
-@Auth(Rol.USER)
+//@ApiBearerAuth()
+//@Auth(Rol.USER)
+
+@Public()
 @Controller('products')
 export class ProductsController {
   constructor(private readonly productsService: ProductsService) {}
