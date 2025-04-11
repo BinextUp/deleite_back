@@ -50,4 +50,10 @@ export class ProductsController {
   async getApiDollars(): Promise<any> {
     return this.productsService.getApiDollars();
   }
+
+  @Get('api-products-wis')
+  async getApiProductByWIS(): Promise<any> {
+    return this.productsService.getApiProductByWIS();
+  }
+
 }

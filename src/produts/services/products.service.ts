@@ -7,6 +7,9 @@ import { Repository } from 'typeorm';
 import { CategoriesService } from '../../categories/services/categories.service';
 import { ApiProductService } from '../../utils/API/services/api-product.service';
 import { ApiDollarService } from '../../utils/API/services/api-dollar.service';
+import { TOKEN_TEMP } from '../../utils/token-temp/token-temp';
+import { AsyncLocalStorage } from 'async_hooks';
+
 
 
 @Injectable()
@@ -16,7 +19,8 @@ export class ProductsService {
     private readonly productRepository: Repository<Product>,
     private readonly categoriesService: CategoriesService,
     private readonly apiDollarService: ApiDollarService,
-    private readonly apiProductService: ApiProductService
+    private readonly apiProductService: ApiProductService,
+    private readonly asyncLocalStorage: AsyncLocalStorage<any>
   ) {}
 
   async create(createProductDto: CreateProductDto): Promise<Product> {
@@ -61,6 +65,11 @@ export class ProductsService {
 
   async getApiDollars(): Promise<any> {
     return this.apiDollarService.ApiGetDollars();
+  }
+
+  async getApiProductByWIS(): Promise<any> {
+    const token = TOKEN_TEMP.length > 0 ? TOKEN_TEMP[0].token : this.asyncLocalStorage.getStore().token;
+    return this.apiProductService.ApiGetProductByWIS(token);
   }
 
 }

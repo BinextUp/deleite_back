@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TasksModule } from './tasks/tasks.module';
 import { AuthModule } from './auth/auth.module';
@@ -14,6 +14,7 @@ import { InvoicesModule } from './invoices/invoices.module';
 import { InvoiceDetailModule } from './invoice-detail/invoice-detail.module';
 import { PaymentMethodsModule } from './payment-methods/payment-methods.module';
 import database from './utils/config/root-typeorm';
+
 
 
 @Module({
