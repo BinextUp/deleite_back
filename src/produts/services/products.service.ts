@@ -14,6 +14,7 @@ import { AsyncLocalStorage } from 'async_hooks';
 
 @Injectable()
 export class ProductsService {
+ 
   constructor(
     @InjectRepository(Product)
     private readonly productRepository: Repository<Product>,
@@ -58,6 +59,10 @@ export class ProductsService {
     await this.findOne(id);
     await this.productRepository.delete(id);
   }
+
+  searchToken(): string {
+    return TOKEN_TEMP.length > 0 ? TOKEN_TEMP[0].token : this.asyncLocalStorage.getStore().token;
+  }
  
   async getApiProducts(): Promise<any> {
     return this.apiProductService.ApiGetProducts();
@@ -68,8 +73,11 @@ export class ProductsService {
   }
 
   async getApiProductByWIS(): Promise<any> {
-    const token = TOKEN_TEMP.length > 0 ? TOKEN_TEMP[0].token : this.asyncLocalStorage.getStore().token;
-    return this.apiProductService.ApiGetProductByWIS(token);
+    return this.apiProductService.ApiGetProductByWIS(this.searchToken());
+  }
+
+  async getApiSearchProductInventoryByWIS(): Promise<any> {
+    return this.apiProductService.getApiSearchProductInventoryByWIS(this.searchToken());
   }
 
 }

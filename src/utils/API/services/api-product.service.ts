@@ -13,8 +13,9 @@ export class ApiProductService {
         headers: {
             'Content-Type': 'application/json',
             'X-API-Key': process.env.X_API_KEY,
-            'Authorization': `Bearer`
-        }
+            'Authorization': ''
+        },
+        params: {}
     }
     async ApiGetProducts(): Promise<any> {
         try {
@@ -28,13 +29,35 @@ export class ApiProductService {
     async ApiGetProductByWIS(token: string): Promise<any> {
         try {
             this.requestConfig.headers.Authorization = `Bearer ${token}`;
-            console.log(this.requestConfig);
             const response = await firstValueFrom(this.httpService.get(
                 `${process.env.API_PRODUCT_WIS}/api/product`,
                 this.requestConfig));
             return response.data.data;
         } catch (error) {
             throw new BadRequestException('Error al obtener el producto  de la API externa de Wis');
+        }
+    }
+
+    async getApiSearchProductInventoryByWIS(token: string): Promise<any> {
+        try {
+            const params = {
+                CompanyStoreID : process.env.COMPANY_STORE_ID,
+                ProductID :0,
+                LocationID :0,
+                ItemsPerPage:20,
+                Page:1,
+                DepartamentID:0,
+                SubCategoryID:0,
+                TrademarkID:0,
+            };
+            this.requestConfig.params = params;
+            this.requestConfig.headers.Authorization = `Bearer ${token}`;
+            const response = await firstValueFrom(this.httpService.get(
+                `${process.env.API_PRODUCT_WIS}/api/inventory/productinventory`,
+                this.requestConfig));
+            return response.data;
+        } catch (error) {
+            throw new BadRequestException('Error al obtener el producto del inventario  de la API externa de Wis');
         }
     }
 }

@@ -32,4 +32,20 @@ export class ApiAuthService {
             throw new BadRequestException('Error al iniciar sesion  de la API externa');
         }
     }
+
+    async refreshTokenApiExterno(refreshToken: string): Promise<any> {
+        try {
+            const data = JSON.stringify({
+                "refreshToken": refreshToken
+            });
+            const response = await firstValueFrom(
+                this.httpService.post(`${process.env.API_AUTH_WIS}/api/authentication/refresh`, 
+                data, 
+                this.requestConfig)
+            );
+            return response.data.data;
+        } catch (error) {
+            throw new BadRequestException('Error al iniciar sesion  de la API externa');
+        }
+    }
 }
