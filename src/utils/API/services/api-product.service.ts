@@ -41,14 +41,14 @@ export class ApiProductService {
     async getApiSearchProductInventoryByWIS(token: string): Promise<any> {
         try {
             const params = {
-                CompanyStoreID : process.env.COMPANY_STORE_ID,
-                ProductID :0,
-                LocationID :0,
-                ItemsPerPage:20,
+                CompanyStoreID : Number(process.env.COMPANY_STORE_ID),
+                ProductID :'',
+                LocationID :'',
+                ItemsPerPage:100,
                 Page:1,
-                DepartamentID:0,
-                SubCategoryID:0,
-                TrademarkID:0,
+                DepartamentID:'',
+                SubCategoryID:'',
+                TrademarkID:'',
             };
             this.requestConfig.params = params;
             this.requestConfig.headers.Authorization = `Bearer ${token}`;

@@ -1,7 +1,9 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
 import { ApiWhatsappService } from 'src/utils/API/services/api-whatsapp.service';
 import { SendMessageWsInterface } from 'src/utils/interfaces/send-message-ws.interface';
+import { Public } from '../auth/decorators/public.decorator';
 
+@Public()
 @Controller('ws')
 export class WsController {
     constructor(private readonly apiWhatsappService: ApiWhatsappService) {}

@@ -1,4 +1,5 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Inject, Injectable } from '@nestjs/common';
+import { CACHE_MANAGER , Cache} from '@nestjs/cache-manager';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateProductDto } from '../dto/create-product.dto';
 import { UpdateProductDto } from '../dto/update-product.dto';
@@ -12,16 +13,19 @@ import { AsyncLocalStorage } from 'async_hooks';
 
 
 
+
 @Injectable()
 export class ProductsService {
  
   constructor(
+    @Inject(CACHE_MANAGER) private cacheManager: Cache,
     @InjectRepository(Product)
     private readonly productRepository: Repository<Product>,
     private readonly categoriesService: CategoriesService,
     private readonly apiDollarService: ApiDollarService,
     private readonly apiProductService: ApiProductService,
-    private readonly asyncLocalStorage: AsyncLocalStorage<any>
+    private readonly asyncLocalStorage: AsyncLocalStorage<any>,
+    
   ) {}
 
   async create(createProductDto: CreateProductDto): Promise<Product> {
@@ -61,7 +65,9 @@ export class ProductsService {
   }
 
   searchToken(): string {
-    return TOKEN_TEMP.length > 0 ? TOKEN_TEMP[0].token : this.asyncLocalStorage.getStore().token;
+    const token = TOKEN_TEMP.length > 0 ? TOKEN_TEMP[0].token : this.asyncLocalStorage.getStore().token;
+    console.log(token);
+    return token;
   }
  
   async getApiProducts(): Promise<any> {
@@ -73,11 +79,24 @@ export class ProductsService {
   }
 
   async getApiProductByWIS(): Promise<any> {
-    return this.apiProductService.ApiGetProductByWIS(this.searchToken());
+
+    const value = await this.cacheManager.get('products');
+    if(!value) {
+      const products = await this.apiProductService.ApiGetProductByWIS(this.searchToken());
+      await this.cacheManager.set('products', products);
+      return products;
+    }
+    return value;
   }
 
   async getApiSearchProductInventoryByWIS(): Promise<any> {
-    return this.apiProductService.getApiSearchProductInventoryByWIS(this.searchToken());
+    const value = await this.cacheManager.get('products_inventory');
+    if(!value) {
+      const products_inventory = await this.apiProductService.getApiSearchProductInventoryByWIS(this.searchToken());
+      await this.cacheManager.set('products_inventory', products_inventory);
+      return products_inventory;
+    }
+    return value;
   }
 
 }

@@ -55,5 +55,9 @@ export class ProductsController {
   async getApiProductByWIS(): Promise<any> {
     return this.productsService.getApiProductByWIS();
   }
+  @Get('api-products-inventory-wis')
+  async getApiProductInventoryByWIS(): Promise<any> {
+    return this.productsService.getApiSearchProductInventoryByWIS();
+  }
 
 }

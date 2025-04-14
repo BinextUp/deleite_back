@@ -1,4 +1,5 @@
 import { Module,MiddlewareConsumer, NestModule } from '@nestjs/common';
+import { CacheModule } from '@nestjs/cache-manager';
 import { ProductsService } from './services/products.service';
 import { ProductsController } from './controllers/products.controller';
 import { Product } from './entities/product.entity';
@@ -9,9 +10,12 @@ import { LocalStorageMiddleware } from '../utils/local-storage/local-storage.mid
 
 
 @Module({
+  imports: [TypeOrmModule.forFeature([Product]),
+  CacheModule.register(), 
+  CategoriesModule,LocalStorageModule],
   controllers: [ProductsController],
   providers: [ProductsService],
-  imports: [TypeOrmModule.forFeature([Product]) , CategoriesModule,LocalStorageModule],
+
 })
 export class ProductsModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
