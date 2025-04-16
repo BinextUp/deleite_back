@@ -38,18 +38,8 @@ export class ApiProductService {
         }
     }
 
-    async getApiSearchProductInventoryByWIS(token: string): Promise<any> {
+    async getApiSearchProductInventoryByWIS(token: string, params: any): Promise<any> {
         try {
-            const params = {
-                CompanyStoreID : Number(process.env.COMPANY_STORE_ID),
-                ProductID :'',
-                LocationID :'',
-                ItemsPerPage:100,
-                Page:1,
-                DepartamentID:'',
-                SubCategoryID:'',
-                TrademarkID:'',
-            };
             this.requestConfig.params = params;
             this.requestConfig.headers.Authorization = `Bearer ${token}`;
             const response = await firstValueFrom(this.httpService.get(

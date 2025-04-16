@@ -89,14 +89,25 @@ export class ProductsService {
     return value;
   }
 
-  async getApiSearchProductInventoryByWIS(): Promise<any> {
-    const value = await this.cacheManager.get('products_inventory');
+  async getApiSearchProductInventoryByWIS(params: any,name_param:any[]): Promise<any> {
+    
+    const value = await this.cacheManager.get(`${name_param[0]}:${params[name_param[0]]}`);
     if(!value) {
-      const products_inventory = await this.apiProductService.getApiSearchProductInventoryByWIS(this.searchToken());
-      await this.cacheManager.set('products_inventory', products_inventory);
+      const newParams = this.filterParams(name_param[0],params);
+      const products_inventory = await this.apiProductService.getApiSearchProductInventoryByWIS(this.searchToken(), newParams);
+      await this.cacheManager.set(`${name_param[0]}:${params[name_param[0]]}`, products_inventory);
       return products_inventory;
     }
     return value;
   }
 
+  filterParams(name_param: any, params: any) {
+
+    const newParams = {
+      CompanyStoreID : Number(process.env.COMPANY_STORE_ID),
+      ItemsPerPage:100,
+      name_param: params.name_param
+    };
+    return newParams;
+  }
 }

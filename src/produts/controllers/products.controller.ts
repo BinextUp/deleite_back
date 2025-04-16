@@ -56,8 +56,13 @@ export class ProductsController {
     return this.productsService.getApiProductByWIS();
   }
   @Get('api-products-inventory-wis')
-  async getApiProductInventoryByWIS(): Promise<any> {
-    return this.productsService.getApiSearchProductInventoryByWIS();
+  async getApiProductInventoryByWIS(@Body() body: Record<string, any>): Promise<any> {
+    if(typeof body === 'undefined' || Object.keys(body).length === 0) {
+      body = {
+        Page: 1
+      };
+    }
+    return this.productsService.getApiSearchProductInventoryByWIS(body,Object.keys(body));
   }
 
 }
