@@ -20,13 +20,14 @@ export class Invoice {
 
     @Column({ type: 'decimal', precision: 10, scale: 2, default: 0 })
     descuento: number;
-
+    /*
     @ManyToOne(() => PaymentMethod, paymentMethod => paymentMethod.invoices)
     @JoinColumn({name: 'paymentMethod_id', referencedColumnName: 'id'})
     paymentMethod: PaymentMethod;
 
     @Column({ type: 'int' })
     paymentMethod_id: number;
+    
 
     @ManyToOne(() => User, user => user.invoices)
     @JoinColumn({name: 'user_id', referencedColumnName: 'id'})
@@ -34,6 +35,7 @@ export class Invoice {
 
     @Column({type: 'int'})
     user_id: number;
+    */
 
     @OneToMany(() => InvoiceDetail, invoiceDetail => invoiceDetail.invoice)
     invoiceDetails: InvoiceDetail[];

@@ -13,6 +13,8 @@ import { CartsModule } from './carts/carts.module';
 import { InvoicesModule } from './invoices/invoices.module';
 import { InvoiceDetailModule } from './invoice-detail/invoice-detail.module';
 import { PaymentMethodsModule } from './payment-methods/payment-methods.module';
+import { PurchaseOrderModule } from './purchase-order/purchase-order.module';
+import { DetailPurchaseModule } from './detail-purchase/detail-purchase.module';
 import database from './utils/config/root-typeorm';
 
 
@@ -35,6 +37,8 @@ import database from './utils/config/root-typeorm';
     InvoicesModule,
     InvoiceDetailModule,
     PaymentMethodsModule,
+    PurchaseOrderModule,
+    DetailPurchaseModule,
   ],
   providers: []
 })

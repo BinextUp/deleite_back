@@ -4,7 +4,7 @@ import { ProductsService } from './services/products.service';
 import { ProductsController } from './controllers/products.controller';
 import { Product } from './entities/product.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { CategoriesModule } from 'src/categories/categories.module';
+import { CategoriesModule } from '../categories/categories.module';
 import { LocalStorageModule } from '../utils/local-storage/local-storage.module';
 import { LocalStorageMiddleware } from '../utils/local-storage/local-storage.middleware';
 

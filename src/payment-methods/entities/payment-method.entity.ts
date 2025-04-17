@@ -1,4 +1,4 @@
-import { Invoice } from "src/invoices/entities/invoice.entity";
+import { PurchaseOrder } from "../../purchase-order/entities/purchase-order.entity";
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity('payment_methods')
@@ -18,6 +18,7 @@ export class PaymentMethod {
     @Column({type: 'boolean', default: true})
     state: boolean;
 
-    @OneToMany(() => Invoice, invoice => invoice.paymentMethod)
-    invoices: Invoice[];
+    @OneToMany(() => PurchaseOrder, purchaseOrder => purchaseOrder.paymentMethod)
+    purchaseOrders: PurchaseOrder[];
+    
 }
