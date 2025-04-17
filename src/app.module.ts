@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { TasksModule } from './tasks/tasks.module';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { ConfigModule } from '@nestjs/config';
@@ -25,7 +24,6 @@ import database from './utils/config/root-typeorm';
       isGlobal: true,
     }),
     TypeOrmModule.forRoot(database()),
-    TasksModule,
     AuthModule, 
     UsersModule, 
     ClientsModule, 
