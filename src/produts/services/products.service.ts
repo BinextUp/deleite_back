@@ -88,19 +88,14 @@ export class ProductsService {
 
   async getApiSearchProductInventoryByWIS(params: any,name_param:any[]): Promise<any> {
     
-    return params;
-    /*
     const value = await this.cacheManager.get(`${name_param[0]}:${params[name_param[0]]}`);
     if(!value) {
       const newParams = this.filterParams(name_param[0],params);
       const products_inventory = await this.apiProductService.getApiSearchProductInventoryByWIS(this.searchToken(), newParams);
       await this.cacheManager.set(`${name_param[0]}:${params[name_param[0]]}`, products_inventory);
-      console.log(this.cacheManager.stores);
       return products_inventory;
     }
-    console.log(this.cacheManager.stores);
     return value;
-    */
   }
 
   filterParams(name_param: any, params: any) {

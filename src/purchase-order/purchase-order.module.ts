@@ -1,5 +1,4 @@
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
-import { CacheModule } from '@nestjs/cache-manager';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { PurchaseOrderService } from './services/purchase-order.service';
 import { PurchaseOrderController } from './controllers/purchase-order.controller';
@@ -15,7 +14,6 @@ import { DetailPurchaseModule } from '../detail-purchase/detail-purchase.module'
   imports: [
     TypeOrmModule.forFeature([PurchaseOrder]), 
     ClientsModule, 
-    CacheModule.register(),
     LocalStorageModule,
     DetailPurchaseModule
   ]

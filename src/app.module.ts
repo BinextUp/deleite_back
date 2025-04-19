@@ -15,6 +15,7 @@ import { PaymentMethodsModule } from './payment-methods/payment-methods.module';
 import { PurchaseOrderModule } from './purchase-order/purchase-order.module';
 import { DetailPurchaseModule } from './detail-purchase/detail-purchase.module';
 import database from './utils/config/root-typeorm';
+import { CacheModule } from '@nestjs/cache-manager';
 
 
 
@@ -23,6 +24,9 @@ import database from './utils/config/root-typeorm';
     ConfigModule.forRoot({
       isGlobal: true,
     }),
+    CacheModule.register({
+      isGlobal: true,
+    }), 
     TypeOrmModule.forRoot(database()),
     AuthModule, 
     UsersModule, 

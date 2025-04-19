@@ -45,7 +45,6 @@ export class PurchaseOrderService {
    
     const updatePurchaseOrder = await this.updatePurchaseOrder(newOrder.id, purchaseOrderWis);
     await this.detailPurchases(createPurchaseOrderDto, newOrder.id);
-    
     return updatePurchaseOrder;
   }
 
