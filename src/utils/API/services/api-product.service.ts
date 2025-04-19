@@ -50,4 +50,20 @@ export class ApiProductService {
             throw new BadRequestException('Error al obtener el producto del inventario  de la API externa de Wis');
         }
     }
+
+    async createApiPurchaseOrder(token: string, params: any): Promise<any> {
+        try {
+            const data = JSON.stringify(params);
+            this.requestConfig.headers.Authorization = `Bearer ${token}`;
+            const response = await firstValueFrom(this.httpService.post(
+                `${process.env.API_WEBSTORE_WIS}/api/order`,
+                data,
+                this.requestConfig));
+            return response.data;
+        } catch (error) {
+            console.log(error)
+            console.log('mensaje', error.message);
+            throw new BadRequestException('Error al crear la orden de la API externa de Wis');
+        }
+    }
 }

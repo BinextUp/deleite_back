@@ -44,7 +44,7 @@ export class ClientsService {
   async findOneByUserId(id: number): Promise<Client> {
     const client = await this.clientRepository.findOne({ where: { user_id: id }, relations: ['user'] });
     if(!client) {
-      throw new BadRequestException('Este usuario no tiene un  perfil');
+      throw new BadRequestException('Este usuario no tiene un perfil');
     }
     return client;
   }

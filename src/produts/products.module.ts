@@ -15,6 +15,7 @@ import { LocalStorageMiddleware } from '../utils/local-storage/local-storage.mid
   CategoriesModule,LocalStorageModule],
   controllers: [ProductsController],
   providers: [ProductsService],
+  exports: [ProductsService]
 
 })
 export class ProductsModule implements NestModule {

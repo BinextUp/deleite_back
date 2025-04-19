@@ -2,14 +2,15 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { DetailPurchaseService } from '../services/detail-purchase.service';
 import { CreateDetailPurchaseDto } from '../dto/create-detail-purchase.dto';
 import { UpdateDetailPurchaseDto } from '../dto/update-detail-purchase.dto';
+import { DetailPurchase } from '../entities/detail-purchase.entity';
 
 @Controller('detail-purchase')
 export class DetailPurchaseController {
   constructor(private readonly detailPurchaseService: DetailPurchaseService) {}
 
   @Post()
-  create(@Body() createDetailPurchaseDto: CreateDetailPurchaseDto) {
-    return this.detailPurchaseService.create(createDetailPurchaseDto);
+  async create(@Body() createDetailPurchaseDto: CreateDetailPurchaseDto[]) : Promise<DetailPurchase[]> {
+    return await this.detailPurchaseService.create(createDetailPurchaseDto);
   }
 
   @Get()

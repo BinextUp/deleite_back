@@ -1,18 +1,15 @@
 import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import { CACHE_MANAGER , Cache} from '@nestjs/cache-manager';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { AsyncLocalStorage } from 'async_hooks';
 import { CreateProductDto } from '../dto/create-product.dto';
 import { UpdateProductDto } from '../dto/update-product.dto';
 import { Product } from '../entities/product.entity';
-import { Repository } from 'typeorm';
 import { CategoriesService } from '../../categories/services/categories.service';
 import { ApiProductService } from '../../utils/API/services/api-product.service';
 import { ApiDollarService } from '../../utils/API/services/api-dollar.service';
 import { TOKEN_TEMP } from '../../utils/token-temp/token-temp';
-import { AsyncLocalStorage } from 'async_hooks';
-
-
-
 
 @Injectable()
 export class ProductsService {
@@ -91,14 +88,19 @@ export class ProductsService {
 
   async getApiSearchProductInventoryByWIS(params: any,name_param:any[]): Promise<any> {
     
+    return params;
+    /*
     const value = await this.cacheManager.get(`${name_param[0]}:${params[name_param[0]]}`);
     if(!value) {
       const newParams = this.filterParams(name_param[0],params);
       const products_inventory = await this.apiProductService.getApiSearchProductInventoryByWIS(this.searchToken(), newParams);
       await this.cacheManager.set(`${name_param[0]}:${params[name_param[0]]}`, products_inventory);
+      console.log(this.cacheManager.stores);
       return products_inventory;
     }
+    console.log(this.cacheManager.stores);
     return value;
+    */
   }
 
   filterParams(name_param: any, params: any) {

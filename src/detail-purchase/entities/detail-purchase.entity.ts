@@ -10,7 +10,7 @@ export class DetailPurchase {
     quantity: number;
 
     @Column({ type: 'decimal', precision: 10, scale: 2 })
-    price: number;
+    price_unit: number;
 
     @Column({ type: 'decimal', precision: 10, scale: 2 })
     sub_total: number;
@@ -23,5 +23,9 @@ export class DetailPurchase {
     purchase_order_id: number;
 
     @Column({ type: 'int' })
-    product_id: number;
+    wis_product_id: number;
+
+    @Column({type: 'varchar' , nullable: true, length: 100})
+    wis_product_name: string;
+    
 }

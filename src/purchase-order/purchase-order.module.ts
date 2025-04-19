@@ -1,12 +1,29 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
+import { CacheModule } from '@nestjs/cache-manager';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { PurchaseOrderService } from './services/purchase-order.service';
 import { PurchaseOrderController } from './controllers/purchase-order.controller';
-import { TypeOrmModule } from '@nestjs/typeorm';
 import { PurchaseOrder } from './entities/purchase-order.entity';
+import { ClientsModule } from '../clients/clients.module';
+import { LocalStorageMiddleware } from '../utils/local-storage/local-storage.middleware';
+import { LocalStorageModule } from '../utils/local-storage/local-storage.module';
+import { DetailPurchaseModule } from '../detail-purchase/detail-purchase.module';
 
 @Module({
   controllers: [PurchaseOrderController],
   providers: [PurchaseOrderService],
-  imports: [TypeOrmModule.forFeature([PurchaseOrder])]
+  imports: [
+    TypeOrmModule.forFeature([PurchaseOrder]), 
+    ClientsModule, 
+    CacheModule.register(),
+    LocalStorageModule,
+    DetailPurchaseModule
+  ]
 })
-export class PurchaseOrderModule {}
+export class PurchaseOrderModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(LocalStorageMiddleware)
+      .forRoutes('*');
+  }
+}
