@@ -99,7 +99,6 @@ export class ProductsService {
   }
 
   filterParams(name_param: any, params: any) {
-
     const newParams = {
       CompanyStoreID : Number(process.env.COMPANY_STORE_ID),
       ItemsPerPage:100,

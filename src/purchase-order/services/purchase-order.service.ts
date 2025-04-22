@@ -32,10 +32,9 @@ export class PurchaseOrderService {
   }
   
   async create(createPurchaseOrderDto: CreatePurchaseOrderDto, user: UserActiveInterface): Promise<any> {
-    const numOrder = await this.numberOrderCorelative();
-    
+
     createPurchaseOrderDto.user_id = user.id;
-    createPurchaseOrderDto.order_number = numOrder;
+    createPurchaseOrderDto.order_number = await this.numberOrderCorelative();
 
     const newOrder = await this.purchaseOrderRepository.save(createPurchaseOrderDto);
     if(!newOrder) {

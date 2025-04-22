@@ -1,8 +1,9 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { CacheModule } from '@nestjs/cache-manager';
+import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
-import { ConfigModule } from '@nestjs/config';
 import { ClientsModule } from './clients/clients.module';
 import { ProductsModule } from './produts/products.module';
 import { CategoriesModule } from './categories/categories.module';
@@ -14,10 +15,8 @@ import { InvoiceDetailModule } from './invoice-detail/invoice-detail.module';
 import { PaymentMethodsModule } from './payment-methods/payment-methods.module';
 import { PurchaseOrderModule } from './purchase-order/purchase-order.module';
 import { DetailPurchaseModule } from './detail-purchase/detail-purchase.module';
+import { CommentsModule } from './comments/comments.module';
 import database from './utils/config/root-typeorm';
-import { CacheModule } from '@nestjs/cache-manager';
-
-
 
 @Module({
   imports: [
@@ -41,6 +40,7 @@ import { CacheModule } from '@nestjs/cache-manager';
     PaymentMethodsModule,
     PurchaseOrderModule,
     DetailPurchaseModule,
+    CommentsModule,
   ],
   providers: []
 })

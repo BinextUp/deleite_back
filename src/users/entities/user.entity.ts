@@ -1,8 +1,9 @@
+import { Entity, PrimaryGeneratedColumn, Column, OneToOne, OneToMany } from "typeorm";
 import { Client } from "src/clients/entities/client.entity";
 import { Rol } from "../../utils/enums/rol.enum";
-import { Entity, PrimaryGeneratedColumn, Column, OneToOne, OneToMany } from "typeorm";
 import { Cart } from "../../carts/entities/cart.entity";
 import { PurchaseOrder } from "../../purchase-order/entities/purchase-order.entity";
+import { Comment } from "../../comments/entities/comment.entity";
 
 @Entity('users')
 export class User {
@@ -36,4 +37,6 @@ export class User {
     @OneToMany(() => PurchaseOrder, (purchaseOrder) => purchaseOrder.user)
     purchaseOrders: PurchaseOrder[];
 
+    @OneToMany(() => Comment, (comment) => comment.user)
+    comments: Comment[];
 }
