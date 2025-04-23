@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CacheModule } from '@nestjs/cache-manager';
 import { ConfigModule } from '@nestjs/config';
@@ -41,7 +41,9 @@ import database from './utils/config/root-typeorm';
     PurchaseOrderModule,
     DetailPurchaseModule,
     CommentsModule,
+
   ],
   providers: []
 })
 export class AppModule {}
+

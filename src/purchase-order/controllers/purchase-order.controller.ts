@@ -11,6 +11,7 @@ import { PurchaseOrder } from '../entities/purchase-order.entity';
 
 @ApiBearerAuth()
 @Auth(Rol.USER)
+
 @Controller('purchase-order')
 export class PurchaseOrderController {
   constructor(private readonly purchaseOrderService: PurchaseOrderService) {}
@@ -42,4 +43,10 @@ export class PurchaseOrderController {
   remove(@Param('id') id: string) {
     return this.purchaseOrderService.remove(+id);
   }
+  @Get('api')
+  async getApi(){
+    console.log('Actualizando estados de las ordenes de compra');
+    return this.purchaseOrderService.updateOrdersStatus();
+  }
+
 }

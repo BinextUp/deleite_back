@@ -1,5 +1,6 @@
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { ScheduleModule } from '@nestjs/schedule';
 import { PurchaseOrderService } from './services/purchase-order.service';
 import { PurchaseOrderController } from './controllers/purchase-order.controller';
 import { PurchaseOrder } from './entities/purchase-order.entity';
@@ -13,6 +14,7 @@ import { DetailPurchaseModule } from '../detail-purchase/detail-purchase.module'
   providers: [PurchaseOrderService],
   imports: [
     TypeOrmModule.forFeature([PurchaseOrder]), 
+    ScheduleModule.forRoot(),
     ClientsModule, 
     LocalStorageModule,
     DetailPurchaseModule

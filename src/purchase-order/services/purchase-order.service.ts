@@ -1,8 +1,9 @@
-import { BadRequestException, Inject, Injectable } from '@nestjs/common';
+import { BadRequestException, Inject, Injectable,Logger } from '@nestjs/common';
 import { CACHE_MANAGER, Cache } from '@nestjs/cache-manager';
 import { AsyncLocalStorage } from 'async_hooks';
 import { DataSource,Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Cron } from '@nestjs/schedule';
 import { CreatePurchaseOrderDto } from '../dto/create-purchase-order.dto';
 import { UpdatePurchaseOrderDto } from '../dto/update-purchase-order.dto';
 import { UserActiveInterface } from '../../utils/interfaces/user-active.interface';
@@ -11,6 +12,7 @@ import { ApiProductService } from '../../utils/API/services/api-product.service'
 import { TOKEN_TEMP } from '../../utils/token-temp/token-temp';
 import { PurchaseOrder } from '../entities/purchase-order.entity';
 import { DetailPurchaseService } from '../../detail-purchase/services/detail-purchase.service';
+
 
 
 @Injectable()
@@ -23,7 +25,7 @@ export class PurchaseOrderService {
     private readonly apiProductService: ApiProductService,
     private readonly asyncLocalStorage: AsyncLocalStorage<any>,
     private readonly dataSource: DataSource,
-    private readonly detailPurchaseService: DetailPurchaseService
+    private readonly detailPurchaseService: DetailPurchaseService,
   ) {}
 
   async numberOrderCorelative(): Promise<number> {
@@ -147,6 +149,40 @@ export class PurchaseOrderService {
       wis_product_name: detail.wis_product_name
     }));
     return await this.detailPurchaseService.create(detail);
+  }
+
+  async getOrdersStatus(): Promise<PurchaseOrder[]> { 
+    return await this.purchaseOrderRepository.find({
+      select: [ 'id', 'order_number', 'wis_order_id', 'estado_id'],
+      where: { estado_id: 1 }
+    });
+  }
+
+  @Cron('59 * * * * *')
+  async updateOrdersStatus() {
+    console.log('Actualizando estados de las ordenes de compra');
+    const orders = await this.getOrdersStatus();
+    if(orders.length === 0) {
+      return;
+    }
+    for (const order of orders) {
+      const params = this.paramsOrderStatus(order.wis_order_id, order.order_number);
+      const orderStatus = await this.apiProductService.getApiPurchaseOrderStatus(this.searchToken(), params);
+      
+      if (orderStatus.data[0].weB_Status.statusWebID != 1) {
+
+        await this.purchaseOrderRepository.update(order.id, { estado_id: Number(orderStatus.data[0].weB_Status.statusWebID) });
+      }
+        
+    }
+  }
+
+  paramsOrderStatus(wisOrderId: number, order_number: number){
+    return {
+      CompanyStoreID: Number(process.env.COMPANY_STORE_ID),
+      OrderID: wisOrderId,
+      OrderNumber: order_number
+    };
   }
   
 
