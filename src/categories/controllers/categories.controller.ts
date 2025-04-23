@@ -5,6 +5,7 @@ import { UpdateCategoryDto } from '../dto/update-category.dto';
 //import { Rol } from '../../utils/enums/rol.enum';
 import { Category } from '../entities/category.entity';
 import { Public } from '../../auth/decorators/public.decorator';
+import { PageCategoryDto } from '../dto/page-category.dto';
 //import { Auth } from '../../auth/decorators/auth.decorator';
 //import { ApiBearerAuth } from '@nestjs/swagger';
 
@@ -40,4 +41,15 @@ export class CategoriesController {
   async remove(@Param('id', ParseIntPipe) id: number):Promise<void> {
     return this.categoriesService.remove(id);
   }
+
+  @Get('allApi')
+  async findAllApi():Promise<any> {
+    return this.categoriesService.findAllApi();
+  }
+
+  @Patch('searchApi/:id')
+  async findOneApi(@Param('id', ParseIntPipe) id: number, @Body() pageCategoryDto: PageCategoryDto):Promise<any> {
+    return this.categoriesService.apiGetProductByCategory(id, pageCategoryDto);
+  }
+
 }

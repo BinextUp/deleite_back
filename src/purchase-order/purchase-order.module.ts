@@ -8,6 +8,7 @@ import { ClientsModule } from '../clients/clients.module';
 import { LocalStorageMiddleware } from '../utils/local-storage/local-storage.middleware';
 import { LocalStorageModule } from '../utils/local-storage/local-storage.module';
 import { DetailPurchaseModule } from '../detail-purchase/detail-purchase.module';
+import { ApiModule } from '../utils/API/api.module';
 
 @Module({
   controllers: [PurchaseOrderController],
@@ -15,7 +16,8 @@ import { DetailPurchaseModule } from '../detail-purchase/detail-purchase.module'
   imports: [
     TypeOrmModule.forFeature([PurchaseOrder]), 
     ScheduleModule.forRoot(),
-    ClientsModule, 
+    ClientsModule,
+    ApiModule,
     LocalStorageModule,
     DetailPurchaseModule
   ]

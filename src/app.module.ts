@@ -16,6 +16,7 @@ import { PaymentMethodsModule } from './payment-methods/payment-methods.module';
 import { PurchaseOrderModule } from './purchase-order/purchase-order.module';
 import { DetailPurchaseModule } from './detail-purchase/detail-purchase.module';
 import { CommentsModule } from './comments/comments.module';
+import { DeparmentsModule } from './deparments/deparments.module';
 import database from './utils/config/root-typeorm';
 
 @Module({
@@ -41,6 +42,7 @@ import database from './utils/config/root-typeorm';
     PurchaseOrderModule,
     DetailPurchaseModule,
     CommentsModule,
+    DeparmentsModule,
 
   ],
   providers: []
