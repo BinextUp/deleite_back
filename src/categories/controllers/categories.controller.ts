@@ -59,7 +59,7 @@ export class CategoriesController {
 
   @Patch('searchCategoriesApi/:id')
   async findOneApi(@Param('id', ParseIntPipe) id: number, @Body() pageCatSubCatDto: PageCatSubCatDto):Promise<any> {
-    return this.categoriesService.apiGetProductByCategory(id, pageCatSubCatDto);
+    return this.categoriesService.apiGetProductByCategory(id, this.inicilizePage(pageCatSubCatDto));
   }
 
   @Get('allSubCategoriesApi')
@@ -69,7 +69,17 @@ export class CategoriesController {
 
   @Patch('searchSubCategoriesApi/:id')
   async findOneSubCategoriesApi(@Param('id', ParseIntPipe) id: number, @Body() pageCatSubCatDto: PageCatSubCatDto):Promise<any> {
-    return this.categoriesService.apiGetProductBySubCategory(id, pageCatSubCatDto);
+   
+    return this.categoriesService.apiGetProductBySubCategory(id, this.inicilizePage(pageCatSubCatDto));
+  }
+
+  inicilizePage(pageCatSubCatDto: PageCatSubCatDto){
+    if(pageCatSubCatDto.Page===0) {
+      pageCatSubCatDto = {
+        Page: 1
+      };
+    }
+    return pageCatSubCatDto;
   }
 
 }

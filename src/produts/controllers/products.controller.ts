@@ -62,12 +62,7 @@ export class ProductsController {
   @Public()
   @Patch('api-products-wis')
   async getApiProductByWIS(@Body() pageProductDto: PageProductDto): Promise<any> {
-    if(pageProductDto.Page===0){
-      pageProductDto = {
-        Page: 1
-      };
-    }
-    return this.productsService.getApiProductByWIS(pageProductDto);
+    return this.productsService.getApiProductByWIS(this.inicilizePage(pageProductDto));
   }
   //TODO:Este codigo a través de Object.keys(body) obtengo los indeces del json, para armar los parametros del api 
   /*
@@ -84,12 +79,16 @@ export class ProductsController {
     @Public()
     @Patch('api-products-inventory-wis')
     async getApiProductInventoryByWIS(@Body() pageProductDto: PageProductDto): Promise<any> {
+      return this.productsService.getApiSearchProductInventoryByWIS(this.inicilizePage(pageProductDto));
+    }
+
+    inicilizePage(pageProductDto: PageProductDto){
       if(pageProductDto.Page===0) {
         pageProductDto = {
           Page: 1
         };
       }
-      return this.productsService.getApiSearchProductInventoryByWIS(pageProductDto);
+      return pageProductDto;
     }
 
 }

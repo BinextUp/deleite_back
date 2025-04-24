@@ -11,6 +11,7 @@ import { ApiProductService } from '../../utils/API/services/api-product.service'
 import { ApiDollarService } from '../../utils/API/services/api-dollar.service';
 import { TOKEN_TEMP } from '../../utils/token-temp/token-temp';
 import { PageProductDto } from '../dto/page-product.dto';
+import { paramsProduct, paramsProductInventory } from 'src/utils/api-params/api-params';
 
 @Injectable()
 export class ProductsService {
@@ -80,40 +81,21 @@ export class ProductsService {
 
     const value = await this.cacheManager.get(`products-Page:${pageProductDto.Page}`);
     if(!value) {
-      const params = await this.filterParamsProduc(pageProductDto);
-      const products = await this.apiProductService.ApiGetProductByWIS(this.searchToken(), params);
+      const products = await this.apiProductService.ApiGetProductByWIS(this.searchToken(), paramsProduct(pageProductDto));
       await this.cacheManager.set(`products-Page:${pageProductDto.Page}`, products);
       return products;
     }
     return value;
   }
 
-  async filterParamsProduc(pageProductDto: PageProductDto): Promise<any> {
-    const newParams = {
-      Page:pageProductDto.Page,
-      ItemsPerPage:20
-    };
-    return newParams;
-  }
-
   async getApiSearchProductInventoryByWIS(pageProductDto: PageProductDto): Promise<any> {
     
     const value = await this.cacheManager.get(`products-inventory-Page:${pageProductDto.Page}`);
     if(!value) {
-      const newParams = this.filterParams(pageProductDto);
-      const products_inventory = await this.apiProductService.getApiSearchProductInventoryByWIS(this.searchToken(), newParams);
+      const products_inventory = await this.apiProductService.getApiSearchProductInventoryByWIS(this.searchToken(), paramsProductInventory(pageProductDto));
       await this.cacheManager.set(`products-inventory-Page:${pageProductDto.Page}`, products_inventory);
       return products_inventory;
     }
     return value;
-  }
-
-  filterParams(pageProductDto: PageProductDto) {
-    const newParams = {
-      CompanyStoreID : Number(process.env.COMPANY_STORE_ID),
-      ItemsPerPage:20,
-      Page: pageProductDto.Page
-    };
-    return newParams;
   }
 }
