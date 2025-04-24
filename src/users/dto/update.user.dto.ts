@@ -4,7 +4,6 @@ import { CreateUserDto } from './create.user.dto';
 import { Rol } from "../../utils/enums/rol.enum";
 import { Client } from "../../clients/entities/client.entity";
 import { Cart } from "../../carts/entities/cart.entity";
-import { Invoice } from "../../invoices/entities/invoice.entity";
 import { PurchaseOrder } from '../../purchase-order/entities/purchase-order.entity';
 import { Comment } from '../../comments/entities/comment.entity';
 export class UpdateUserDto extends PartialType(CreateUserDto) {
@@ -34,8 +33,6 @@ export class UpdateUserDto extends PartialType(CreateUserDto) {
     carts: Cart[];
     @IsOptional()
     comments: Comment[];
-    @IsOptional()
-    invoices: Invoice[];
     @IsOptional()
     purchaseOrders: PurchaseOrder[];
 }

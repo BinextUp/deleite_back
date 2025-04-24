@@ -13,12 +13,12 @@ import { Rol } from '../../utils/enums/rol.enum';
 export class UsersController {
     constructor(private readonly usersService: UsersService) {}
 
-    @Get()
+    @Get('all')
     async getAllUsers(): Promise<User[]> {
         return this.usersService.getAllUsers();
     }
 
-    @Get(':id')
+    @Get('search/:id')
     async getUser(@Param('id') id: number): Promise<User> {
         return this.usersService.getUser(id);
     }
@@ -34,7 +34,7 @@ export class UsersController {
         return this.usersService.updateUser(id, user);
     }
 
-    @Delete(':id')
+    @Delete('delete/:id')
     async deleteUser(@Param('id') id: number): Promise<void> {
         return this.usersService.deleteUser(id);
     }
