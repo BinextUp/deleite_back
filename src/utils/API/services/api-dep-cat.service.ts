@@ -41,4 +41,16 @@ export class ApiDepCatService {
         }
     }
 
+    async ApiGetAllSubCategories(token: string, params: any): Promise<any> {
+        try {
+            this.requestConfig.params = params;
+            this.requestConfig.headers.Authorization = `Bearer ${token}`;
+            console.log(this.requestConfig,`${process.env.API_MASTER_WIS}/api/SubCategory`);
+            const response = await firstValueFrom(this.httpService.get(`${process.env.API_MASTER_WIS}/api/SubCategory`, this.requestConfig));
+            return response.data;
+        } catch (error) {
+            throw new BadRequestException('Error al obtener las subcategorías  de la API externa');
+        }
+    }
+
 }

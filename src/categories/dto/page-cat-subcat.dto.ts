@@ -1,6 +1,6 @@
 import { IsNumber } from "class-validator";
 
-export class PageCategoryDto {
+export class PageCatSubCatDto {
     @IsNumber()
     Page: number;
 }

@@ -8,7 +8,7 @@ import { UpdateCategoryDto } from '../dto/update-category.dto';
 import { Category } from '../entities/category.entity';
 import { ApiDepCatService } from '../../utils/API/services/api-dep-cat.service';
 import { TOKEN_TEMP } from '../../utils/token-temp/token-temp';
-import { PageCategoryDto } from '../dto/page-category.dto';
+import { PageCatSubCatDto } from '../dto/page-cat-subcat.dto';
 import { ApiProductService } from '../../utils/API/services/api-product.service';
 
 @Injectable()
@@ -73,27 +73,63 @@ export class CategoriesService {
     return params;
    }
   
-   async apiGetProductByCategory(id: number, pageCategoryDto: PageCategoryDto):Promise<any> {
-       const categoryCache = await this.cacheManager.get(`category-${id}-Page:${pageCategoryDto.Page}`);
-       if(!categoryCache){
-         const params = await this.paramsOneCategory(id,pageCategoryDto);
-         const category = await this.apiProductService.getApiSearchProductInventoryByWIS(this.searchToken(), params);
-         await this.cacheManager.set(`category-${id}-Page:${pageCategoryDto.Page}`, category);
-         return category;
-       }
-       return categoryCache;
-     }
-   
-     async paramsOneCategory( id: number, pageCategoryDto: PageCategoryDto):Promise<any> {
-       const params = {
-         CompanyStoreID:Number(process.env.COMPANY_STORE_ID),
-         ItemsPerPage:100,
-         Page:pageCategoryDto.Page,
-         CategoryID:id
-       };
-       return params;
-     }
+  async apiGetProductByCategory(id: number, pageCatSubCatDto: PageCatSubCatDto):Promise<any> {
+    const categoryCache = await this.cacheManager.get(`category-${id}-Page:${pageCatSubCatDto.Page}`);
+    if(!categoryCache){
+      const params = await this.paramsOneCategory(id,pageCatSubCatDto);
+      const category = await this.apiProductService.getApiSearchProductInventoryByWIS(this.searchToken(), params);
+      await this.cacheManager.set(`category-${id}-Page:${pageCatSubCatDto.Page}`, category);
+      return category;
+    }
+    return categoryCache;
+  }
+  async paramsOneCategory( id: number, pageCatSubCatDto: PageCatSubCatDto):Promise<any> {
+    const params = {
+      CompanyStoreID:Number(process.env.COMPANY_STORE_ID),
+      ItemsPerPage:15,
+      Page:pageCatSubCatDto.Page,
+      CategoryID:id
+    };
+    return params;
+  }
 
+  async findAllSubCategoriesApi(): Promise<any> {
+    const subCategoriesCache = await this.cacheManager.get('subCategories');
+    if(!subCategoriesCache){
+      const params = await this.paramsAllSubCategories();
+      const subCategories = await this.apiDepCatService.ApiGetAllSubCategories(this.searchToken(), params);
+      await this.cacheManager.set('subCategories', subCategories.data);
+      return subCategories.data;
+    }
+    return subCategoriesCache;
+  }
 
+  async paramsAllSubCategories():Promise<any> {
+    const params = {
+      Active:true,
+    };
+    return params;
+  }
+
+  async apiGetProductBySubCategory(id: number, pageCatSubCatDto: PageCatSubCatDto):Promise<any> {
+    const subCategoryCache = await this.cacheManager.get(`subCategory-${id}-Page:${pageCatSubCatDto.Page}`);
+    if(!subCategoryCache){
+      const params = await this.paramsOneSubCategory(id,pageCatSubCatDto);
+      const subCategory = await this.apiProductService.getApiSearchProductInventoryByWIS(this.searchToken(), params);
+      await this.cacheManager.set(`subCategory-${id}-Page:${pageCatSubCatDto.Page}`, subCategory);
+      return subCategory;
+    }
+    return subCategoryCache;
+  }
+
+  async paramsOneSubCategory( id: number, pageCatSubCatDto: PageCatSubCatDto):Promise<any> {
+    const params = {
+      CompanyStoreID:Number(process.env.COMPANY_STORE_ID),
+      ItemsPerPage:15,
+      Page:pageCatSubCatDto.Page,
+      SubCategoryID:id
+    };
+    return params;
+  }
 
 }
