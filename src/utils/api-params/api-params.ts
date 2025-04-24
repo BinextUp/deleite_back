@@ -1,3 +1,4 @@
+import { PageDeparmentDto } from "src/deparments/dto/page-deparment.dto";
 import { PageCatSubCatDto } from "../../categories/dto/page-cat-subcat.dto";
 import { PageProductDto } from "../../produts/dto/page-product.dto";
 
@@ -37,5 +38,14 @@ export const paramsProduct = (pageProductDto: PageProductDto)=> {
     return {
         Page:pageProductDto.Page,
       ItemsPerPage:20
+    }
+};
+
+export const paramsDepartment = (id: number,pageDeparmentDto: PageDeparmentDto)=> {
+    return {
+        CompanyStoreID:Number(process.env.COMPANY_STORE_ID),
+        ItemsPerPage:100,
+        Page:pageDeparmentDto.Page,
+        DepartamentID:id
     }
 };

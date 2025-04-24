@@ -15,7 +15,12 @@ export class DeparmentsController {
 
 @Patch('search/:id')
  async findOne(@Param('id', ParseIntPipe) id: number, @Body() pageDeparmentDto: PageDeparmentDto):Promise<any> {
-    return await this.deparmentsService.apiGetOneDepartment(id, pageDeparmentDto);
+  if(pageDeparmentDto.Page ==0){
+    pageDeparmentDto = {
+      Page: 1
+    };
+  }  
+  return await this.deparmentsService.apiGetOneDepartment(id, pageDeparmentDto);
   }
 
 }
