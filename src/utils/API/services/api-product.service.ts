@@ -26,13 +26,14 @@ export class ApiProductService {
         }
     }
 
-    async ApiGetProductByWIS(token: string): Promise<any> {
+    async ApiGetProductByWIS(token: string, params: any): Promise<any> {
         try {
+            this.requestConfig.params = params;
             this.requestConfig.headers.Authorization = `Bearer ${token}`;
             const response = await firstValueFrom(this.httpService.get(
                 `${process.env.API_PRODUCT_WIS}/api/product`,
                 this.requestConfig));
-            return response.data.data;
+            return response.data;
         } catch (error) {
             throw new BadRequestException('Error al obtener el producto  de la API externa de Wis');
         }

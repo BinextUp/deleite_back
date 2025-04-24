@@ -10,6 +10,7 @@ import { CategoriesService } from '../../categories/services/categories.service'
 import { ApiProductService } from '../../utils/API/services/api-product.service';
 import { ApiDollarService } from '../../utils/API/services/api-dollar.service';
 import { TOKEN_TEMP } from '../../utils/token-temp/token-temp';
+import { PageProductDto } from '../dto/page-product.dto';
 
 @Injectable()
 export class ProductsService {
@@ -75,34 +76,43 @@ export class ProductsService {
     return this.apiDollarService.ApiGetDollars();
   }
 
-  async getApiProductByWIS(): Promise<any> {
+  async getApiProductByWIS(pageProductDto: PageProductDto): Promise<any> {
 
-    const value = await this.cacheManager.get('products');
+    const value = await this.cacheManager.get(`products-Page:${pageProductDto.Page}`);
     if(!value) {
-      const products = await this.apiProductService.ApiGetProductByWIS(this.searchToken());
-      await this.cacheManager.set('products', products);
+      const params = await this.filterParamsProduc(pageProductDto);
+      const products = await this.apiProductService.ApiGetProductByWIS(this.searchToken(), params);
+      await this.cacheManager.set(`products-Page:${pageProductDto.Page}`, products);
       return products;
     }
     return value;
   }
 
-  async getApiSearchProductInventoryByWIS(params: any,name_param:any[]): Promise<any> {
+  async filterParamsProduc(pageProductDto: PageProductDto): Promise<any> {
+    const newParams = {
+      Page:pageProductDto.Page,
+      ItemsPerPage:20
+    };
+    return newParams;
+  }
+
+  async getApiSearchProductInventoryByWIS(pageProductDto: PageProductDto): Promise<any> {
     
-    const value = await this.cacheManager.get(`${name_param[0]}:${params[name_param[0]]}`);
+    const value = await this.cacheManager.get(`products-inventory-Page:${pageProductDto.Page}`);
     if(!value) {
-      const newParams = this.filterParams(name_param[0],params);
+      const newParams = this.filterParams(pageProductDto);
       const products_inventory = await this.apiProductService.getApiSearchProductInventoryByWIS(this.searchToken(), newParams);
-      await this.cacheManager.set(`${name_param[0]}:${params[name_param[0]]}`, products_inventory);
+      await this.cacheManager.set(`products-inventory-Page:${pageProductDto.Page}`, products_inventory);
       return products_inventory;
     }
     return value;
   }
 
-  filterParams(name_param: any, params: any) {
+  filterParams(pageProductDto: PageProductDto) {
     const newParams = {
       CompanyStoreID : Number(process.env.COMPANY_STORE_ID),
-      ItemsPerPage:100,
-      name_param: params.name_param
+      ItemsPerPage:20,
+      Page: pageProductDto.Page
     };
     return newParams;
   }

@@ -2,6 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe} from '
 import { ProductsService } from '../services/products.service';
 import { CreateProductDto } from '../dto/create-product.dto';
 import { UpdateProductDto } from '../dto/update-product.dto';
+import { PageProductDto } from '../dto/page-product.dto';
 import { Product } from '../entities/product.entity';
 import { Public } from '../../auth/decorators/public.decorator';
 import { ApiBearerAuth } from '@nestjs/swagger';
@@ -59,10 +60,17 @@ export class ProductsController {
   }
   */
   @Public()
-  @Get('api-products-wis')
-  async getApiProductByWIS(): Promise<any> {
-    return this.productsService.getApiProductByWIS();
+  @Patch('api-products-wis')
+  async getApiProductByWIS(@Body() pageProductDto: PageProductDto): Promise<any> {
+    if(pageProductDto.Page===0){
+      pageProductDto = {
+        Page: 1
+      };
+    }
+    return this.productsService.getApiProductByWIS(pageProductDto);
   }
+  //TODO:Este codigo a través de Object.keys(body) obtengo los indeces del json, para armar los parametros del api 
+  /*
   @Public()
   @Get('api-products-inventory-wis')
   async getApiProductInventoryByWIS(@Body() body: Record<string, any>): Promise<any> {
@@ -72,6 +80,16 @@ export class ProductsController {
       };
     }
     return this.productsService.getApiSearchProductInventoryByWIS(body,Object.keys(body));
-  }
+  }*/
+    @Public()
+    @Patch('api-products-inventory-wis')
+    async getApiProductInventoryByWIS(@Body() pageProductDto: PageProductDto): Promise<any> {
+      if(pageProductDto.Page===0) {
+        pageProductDto = {
+          Page: 1
+        };
+      }
+      return this.productsService.getApiSearchProductInventoryByWIS(pageProductDto);
+    }
 
 }
