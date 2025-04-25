@@ -44,7 +44,7 @@ export const paramsProduct = (pageProductDto: PageProductDto)=> {
 export const paramsDepartment = (id: number,pageDeparmentDto: PageDeparmentDto)=> {
     return {
         CompanyStoreID:Number(process.env.COMPANY_STORE_ID),
-        ItemsPerPage:100,
+        ItemsPerPage:20,
         Page:pageDeparmentDto.Page,
         DepartamentID:id
     }
