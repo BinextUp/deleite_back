@@ -1,12 +1,12 @@
 import { User } from "src/users/entities/user.entity";
-import { PrimaryGeneratedColumn, Column, DeleteDateColumn,JoinColumn, ManyToOne, Entity } from "typeorm";
+import { PrimaryGeneratedColumn, Column,JoinColumn, ManyToOne, Entity } from "typeorm";
 
 @Entity('carts')
 export class Cart {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column({type: 'boolean' , nullable: false, default: true})
+    @Column({type: 'boolean' , default: true})
     status:boolean;
 
     @Column({type: 'int'})
@@ -15,9 +15,9 @@ export class Cart {
     @Column({type: 'decimal'})
     precio: number;
 
-    @DeleteDateColumn({nullable: true, default: new Date()})
-    deletedAt: Date;
-
+    @Column({type: 'date', default: () => 'CURRENT_TIMESTAMP'})
+    fecha: Date;
+    
     @Column({type: 'int'})
     product_id: number;
 
@@ -25,6 +25,10 @@ export class Cart {
     @JoinColumn({name: 'user_id', referencedColumnName: 'id'})
     user: User;
 
-    @Column({type: 'int'})
+    @Column({type: 'int', nullable: true})
     user_id: number;
+
+    @Column({type: 'varchar', nullable: false})
+    session_id: string;
+    
 }

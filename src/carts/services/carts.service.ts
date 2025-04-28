@@ -13,8 +13,26 @@ export class CartsService {
     private readonly cartRepository: Repository<Cart>
   ) {}
 
-  async create(createCartDto: CreateCartDto, user: UserActiveInterface): Promise<Cart> {
+  async createSession(createCartDto: CreateCartDto, session: Record<string, any>): Promise<Cart> {
+    
+    if(!session){
+      throw new BadRequestException('No se ha encontrado un usuario ni una sesion');
+    }
+    createCartDto.session_id = session.id;
+    const cart = await this.cartRepository.save(createCartDto);
+    if(!cart) {
+      throw new BadRequestException('Error al agregar el producto al carrito');
+    }
+    return cart;
+  }
+  async createToken(createCartDto: CreateCartDto, user: UserActiveInterface, session: Record<string, any>): Promise<any> {
+    
+    if(!user && !session){
+      throw new BadRequestException('No se ha encontrado un usuario ni una sesion');
+    }
+    await this.updateUserCart(user, session);
     createCartDto.user_id = user.id;
+    createCartDto.session_id = session.id;
     const cart = await this.cartRepository.save(createCartDto);
     if(!cart) {
       throw new BadRequestException('Error al agregar el producto al carrito');
@@ -22,8 +40,36 @@ export class CartsService {
     return cart;
   }
 
-  async findAllCartsActiveByUser(user: UserActiveInterface,): Promise<Cart[]> {
+  async updateUserCart(user: UserActiveInterface, session: Record<string, any>): Promise<any> {
+    const carts = await this.findAllCartsActiveBySession(session);
+    if(carts.length > 0){
+      for(const cart of carts){
+        cart.user_id = user.id;
+        await this.cartRepository.update(cart.id, cart);
+      }
+    }
+    return carts;
+
+  }
+ 
+  async findAllCartsActiveBySession( session: Record<string, any>): Promise<Cart[]> {
+    if(!session){
+      throw new BadRequestException('No se ha encontrado un usuario ni una sesion');
+    }
+    return this.cartRepository.find({ where: { session_id: session.id, status: true } });
+  }
+  
+  
+  async findAllCartsActiveByUser(user: UserActiveInterface, session: Record<string, any>): Promise<Cart[]> {
+    if(!user){
+      throw new BadRequestException('No se ha encontrado un usuario ni una sesion');
+    }
+    
     return this.cartRepository.find({ where: { user_id: user.id, status: true } });
+  }
+
+  async findAllCarts(): Promise<Cart[]> {
+    return this.cartRepository.find();
   }
 
   async findOne(id: number): Promise<Cart> {
@@ -34,7 +80,7 @@ export class CartsService {
     return cart;
   }
 
-  async update(id: number, updateCartDto: UpdateCartDto): Promise<Cart> {
+  async updateProduct(id: number, updateCartDto: UpdateCartDto): Promise<Cart> {
     await this.cartRepository.findOne({ where: { id } });
     const updatedCart = await this.cartRepository.update(id, updateCartDto).then(() => this.findOne(id));
     if(!updatedCart) {
@@ -49,5 +95,22 @@ export class CartsService {
       throw new BadRequestException('Carrito no encontrado');
     }
     return this.cartRepository.delete(id);
+  }
+
+  async removeAllSession(session: Record<string, any>) {
+    const carts = await this.findAllCartsActiveBySession(session);
+
+    for(const cart of carts){
+      await this.cartRepository.delete(cart.id);
+    }
+    return true;
+  }
+
+  async removeAllUser(user: UserActiveInterface) {
+   const carts = await this.findAllCartsActiveByUser(user, {});
+   for(const cart of carts){
+     await this.cartRepository.delete(cart.id);
+   }
+   return true;
   }
 }

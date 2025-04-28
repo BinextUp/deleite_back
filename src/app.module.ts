@@ -16,6 +16,8 @@ import { DetailPurchaseModule } from './detail-purchase/detail-purchase.module';
 import { CommentsModule } from './comments/comments.module';
 import { DeparmentsModule } from './deparments/deparments.module';
 import database from './utils/config/root-typeorm';
+import { LocalStorageMiddleware } from './utils/local-storage/local-storage.middleware';
+import { LocalStorageModule } from './utils/local-storage/local-storage.module';
 
 @Module({
   imports: [
@@ -39,9 +41,16 @@ import database from './utils/config/root-typeorm';
     DetailPurchaseModule,
     CommentsModule,
     DeparmentsModule,
+    LocalStorageModule
 
   ],
   providers: []
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(LocalStorageMiddleware)
+      .forRoutes('*'); // Se aplica a todas las rutas
+  }
+}
 

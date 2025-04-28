@@ -2,6 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import * as morgan from 'morgan';
+import * as session from 'express-session';
 import 'reflect-metadata';
 import { CORS } from './utils/cors/cors';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
@@ -17,6 +18,16 @@ async function bootstrap() {
     forbidNonWhitelisted: true,
   }));
   app.use(morgan('dev'));
+  app.use(session({
+    secret: String(process.env.SECRET_SESSION),
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+      secure: false, //si lo colocas en true, debes usar https el servidor
+      httpOnly: true,
+      maxAge: 24 * 60 * 60 * 1000 // 1 day
+    }
+  }));
 
   //TODO: documentacion de la API en swagger
   const config = new DocumentBuilder()

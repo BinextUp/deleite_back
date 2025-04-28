@@ -1,21 +1,20 @@
-import { IsBoolean, IsDate, IsInt } from "class-validator";
+import {  IsInt, IsOptional, IsString } from "class-validator";
 
 export class CreateCartDto {
-    @IsBoolean()
-    status:boolean;
-
     @IsInt()
     cantidad: number;
 
     @IsInt()
     precio: number;
 
-    @IsDate()
-    deletedAt: Date;
-
     @IsInt()    
     product_id: number;
 
     @IsInt()
+    @IsOptional()
     user_id: number;
+
+    @IsString()
+    @IsOptional()
+    session_id: string;
 }
