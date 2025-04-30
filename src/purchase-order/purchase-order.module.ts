@@ -9,6 +9,7 @@ import { LocalStorageMiddleware } from '../utils/local-storage/local-storage.mid
 import { LocalStorageModule } from '../utils/local-storage/local-storage.module';
 import { DetailPurchaseModule } from '../detail-purchase/detail-purchase.module';
 import { ApiModule } from '../utils/API/api.module';
+import { AuthModule } from '../auth/auth.module';
 
 @Module({
   controllers: [PurchaseOrderController],
@@ -19,7 +20,8 @@ import { ApiModule } from '../utils/API/api.module';
     ClientsModule,
     ApiModule,
     LocalStorageModule,
-    DetailPurchaseModule
+    DetailPurchaseModule,
+    AuthModule
   ]
 })
 export class PurchaseOrderModule implements NestModule {

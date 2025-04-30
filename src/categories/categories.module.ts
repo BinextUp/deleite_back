@@ -7,11 +7,12 @@ import { Category } from './entities/category.entity';
 import { ApiModule } from '../utils/API/api.module';
 import { LocalStorageModule } from '../utils/local-storage/local-storage.module';
 import { LocalStorageMiddleware } from '../utils/local-storage/local-storage.middleware';
+import { AuthModule } from '../auth/auth.module';
 
 @Module({
   controllers: [CategoriesController],
   providers: [CategoriesService],
-  imports: [TypeOrmModule.forFeature([Category]),ApiModule,LocalStorageModule],
+  imports: [TypeOrmModule.forFeature([Category]),ApiModule,LocalStorageModule,AuthModule],
   exports: [CategoriesService]
 })
 export class CategoriesModule implements NestModule {

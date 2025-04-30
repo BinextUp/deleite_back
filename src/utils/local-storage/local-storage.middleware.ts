@@ -12,7 +12,6 @@ export class LocalStorageMiddleware implements NestMiddleware {
   
   async use(req: any, res: any, next: () => void) {
    const json = await this.setDataLocalStorage(TOKEN_TEMP);
-   console.log("Entro al middleware");
    this.asyncLocalStorage.run(json, ()=>{
       next();
     });
