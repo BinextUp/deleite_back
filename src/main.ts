@@ -23,7 +23,7 @@ async function bootstrap() {
     resave: false,
     saveUninitialized: true,
     cookie: {
-      secure: false, //si lo colocas en true, debes usar https el servidor
+      secure: true, //si lo colocas en true, debes usar https el servidor
       httpOnly: true,
       maxAge: 24 * 60 * 60 * 1000 // 1 day
     }
