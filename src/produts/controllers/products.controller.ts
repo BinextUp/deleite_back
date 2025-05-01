@@ -48,12 +48,12 @@ export class ProductsController {
   remove(@Param('id', ParseIntPipe) id: number) {
     return this.productsService.remove(id);
   }
-  /*
+  @Public()
   @Get('api-products')
   async getApiProducts(): Promise<any> {
     return this.productsService.getApiProducts();
   }
-
+ /*
   @Get('api-dollars')
   async getApiDollars(): Promise<any> {
     return this.productsService.getApiDollars();

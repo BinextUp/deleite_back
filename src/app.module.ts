@@ -18,6 +18,7 @@ import { DeparmentsModule } from './deparments/deparments.module';
 import database from './utils/config/root-typeorm';
 import { LocalStorageMiddleware } from './utils/local-storage/local-storage.middleware';
 import { LocalStorageModule } from './utils/local-storage/local-storage.module';
+import { AppController } from './app.controller';
 
 @Module({
   imports: [
@@ -44,7 +45,8 @@ import { LocalStorageModule } from './utils/local-storage/local-storage.module';
     LocalStorageModule
 
   ],
-  providers: []
+  providers: [],
+  controllers: [AppController]
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

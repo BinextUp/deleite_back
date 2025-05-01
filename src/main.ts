@@ -1,6 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { ValidationPipe } from '@nestjs/common';
+import { RequestMethod, ValidationPipe } from '@nestjs/common';
 import * as morgan from 'morgan';
 import * as session from 'express-session';
 import 'reflect-metadata';
@@ -10,7 +10,7 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.enableCors(CORS);
-  app.setGlobalPrefix("api/v1");
+  app.setGlobalPrefix("api/v1", { exclude:[{ path: '/', method: RequestMethod.GET }]  });
   //TODO:validacion de datos y el whitelist sirve para que no se envien datos que no esten en el dto
   app.useGlobalPipes(new ValidationPipe({
     whitelist: true,

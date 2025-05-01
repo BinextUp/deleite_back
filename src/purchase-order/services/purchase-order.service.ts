@@ -158,7 +158,7 @@ export class PurchaseOrderService {
     });
   }
 
-  //@Cron('59 * * * * *')
+  @Cron('59 * * * * *')
   async updateOrdersStatus() {
     console.log('Actualizando estados de las ordenes de compra');
     const orders = await this.getOrdersStatus();
