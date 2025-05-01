@@ -117,7 +117,7 @@ export class CartsService {
    return true;
   }
 
-  @Cron('0 0 0 * *') // se ejecuta cada 24 hora todo los dias
+  @Cron('0 0 0 * * *') // se ejecuta cada 24 hora todo los dias
   async cleanerCart():Promise<Cart[]>{
     const fecha24 =new Date(Date.now() - 24 * 60 * 60 * 1000);
     const carts = await this.cartRepository.find({ where: { user_id: IsNull(),fecha: LessThan(fecha24)} });
