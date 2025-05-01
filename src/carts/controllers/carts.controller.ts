@@ -76,4 +76,10 @@ export class CartsController {
   async removeAllUser(@UserActive() user: UserActiveInterface) {
     return this.cartsService.removeAllUser(user);
   }
+
+  @Public()
+  @Get('clear')
+  async cleanerCart():Promise<Cart[]>{
+    return this.cartsService.cleanerCart();
+  }
 }

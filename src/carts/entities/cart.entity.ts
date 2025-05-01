@@ -1,5 +1,5 @@
 import { User } from "src/users/entities/user.entity";
-import { PrimaryGeneratedColumn, Column,JoinColumn, ManyToOne, Entity } from "typeorm";
+import { PrimaryGeneratedColumn, Column,JoinColumn, ManyToOne, Entity, Timestamp } from "typeorm";
 
 @Entity('carts')
 export class Cart {
@@ -15,7 +15,7 @@ export class Cart {
     @Column({type: 'decimal'})
     precio: number;
 
-    @Column({type: 'date', default: () => 'CURRENT_TIMESTAMP'})
+    @Column({type: 'timestamp', default: () => 'CURRENT_TIMESTAMP'})
     fecha: Date;
     
     @Column({type: 'int'})

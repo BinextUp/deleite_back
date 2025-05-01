@@ -1,10 +1,13 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
+import { IsNull, LessThan, Repository } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Cron } from '@nestjs/schedule';
 import { CreateCartDto } from '../dto/create-cart.dto';
 import { UpdateCartDto } from '../dto/update-cart.dto';
 import { Cart } from '../entities/cart.entity';
-import { UserActiveInterface } from 'src/utils/interfaces/user-active.interface';
-import { Repository } from 'typeorm';
-import { InjectRepository } from '@nestjs/typeorm';
+import { UserActiveInterface } from '../../utils/interfaces/user-active.interface';
+
+
 @Injectable()
 export class CartsService {
   
@@ -113,4 +116,17 @@ export class CartsService {
    }
    return true;
   }
+
+  @Cron('0 0 0 * *') // se ejecuta cada 24 hora todo los dias
+  async cleanerCart():Promise<Cart[]>{
+    const fecha24 =new Date(Date.now() - 24 * 60 * 60 * 1000);
+    const carts = await this.cartRepository.find({ where: { user_id: IsNull(),fecha: LessThan(fecha24)} });
+    if(carts.length>0){
+      for(const cart of carts){
+      await this.remove(cart.id);
+      }
+    }
+    return carts;
+  }
 }
+
