@@ -12,7 +12,7 @@ import { ApiProductService } from '../../utils/API/services/api-product.service'
 import { TOKEN_TEMP } from '../../utils/token-temp/token-temp';
 import { PurchaseOrder } from '../entities/purchase-order.entity';
 import { DetailPurchaseService } from '../../detail-purchase/services/detail-purchase.service';
-
+import { paramsStatusOrder, paramsCreatePurchaseOrder } from '../../utils/api-params/api-params';
 
 
 @Injectable()
@@ -43,9 +43,8 @@ export class PurchaseOrderService {
       throw new BadRequestException('Error al crear la orden de compra de deleite');
     }
     const purchaseOrderWis = await this.CALL_API_WIS(createPurchaseOrderDto, user, newOrder.id);
-   
-    const updatePurchaseOrder = await this.updatePurchaseOrder(newOrder.id, purchaseOrderWis);
     await this.detailPurchases(createPurchaseOrderDto, newOrder.id);
+    const updatePurchaseOrder = await this.updatePurchaseOrder(newOrder.id, purchaseOrderWis);
     return updatePurchaseOrder;
   }
 
@@ -71,7 +70,6 @@ export class PurchaseOrderService {
     if(!purchaseOrder) {
       throw new BadRequestException('Orden de compra no encontrada');
     }
-
     return purchaseOrder;
   }
 
@@ -90,42 +88,13 @@ export class PurchaseOrderService {
     }
    
 
-  async filterParams(params: CreatePurchaseOrderDto, user: UserActiveInterface): Promise<any> {
+  async filterParams(createPurchaseOrder: CreatePurchaseOrderDto, user: UserActiveInterface): Promise<any> {
     
     if(!user) {
       throw new BadRequestException('Usuario no autenticado');
     }
-    const perfilUser = await this.clientsService.findOneByUserId(user.id);    
-    const newParams = {
-      companyStoreID: Number(process.env.COMPANY_STORE_ID),
-      orderNumber: String(params.order_number), // obligatorio
-      observation: `Orden ${params.order_number}`, // obligatorio
-      subTotal: params.total,
-      tax: params.tax,
-      total: params.total,
-      dateCreate: new Date(),
-      statusWebID: 1,
-      identityCard: perfilUser.cedula,
-      typePerson:'v',
-      Person:{
-        CompanyStoreID:Number(process.env.COMPANY_STORE_ID),
-        identityCard: perfilUser.cedula,
-        identityTypeSymbol:'v',
-        name: perfilUser.name,
-        lastName: perfilUser.last_name,
-        phoneMobile:perfilUser.phone,
-        email:perfilUser.user.email
-      },
-      WEB_OrderProduct: params.detailPurchases.map((detail) => ({
-        productID: detail.wis_product_id,
-        quantity: detail.quantity,
-        salesPrice: detail.price_unit,
-        subTotal:detail.price_unit,
-        total:detail.price_unit*detail.quantity,
-        observation: `Observacion ${detail.wis_product_id}` // obligatorio
-      }))
-    };
-    return newParams;
+    const perfilUser = await this.clientsService.findOneByUserId(user.id);
+    return  paramsCreatePurchaseOrder(createPurchaseOrder, perfilUser);
   }
 
   async updatePurchaseOrder( id: number, purchaseOrderWis: any): Promise<any> {
@@ -153,8 +122,8 @@ export class PurchaseOrderService {
 
   async getOrdersStatus(): Promise<PurchaseOrder[]> { 
     return await this.purchaseOrderRepository.find({
-      select: [ 'id', 'order_number', 'wis_order_id', 'estado_id'],
-      where: { estado_id: 1 }
+      select: [ 'id', 'order_number', 'wis_order_id', 'estatu_id'],
+      where: { estatu_id: 1 }
     });
   }
 
@@ -166,24 +135,35 @@ export class PurchaseOrderService {
       return;
     }
     for (const order of orders) {
-      const params = this.paramsOrderStatus(order.wis_order_id, order.order_number);
-      const orderStatus = await this.apiProductService.getApiPurchaseOrderStatus(this.searchToken(), params);
-      
-      if (orderStatus.data[0].weB_Status.statusWebID != 1) {
+      const orderStatus = await this.apiProductService.getApiPurchaseOrderStatus(
+        this.searchToken(), paramsStatusOrder(order.wis_order_id, order.order_number));
+        let estatu=0;
 
-        await this.purchaseOrderRepository.update(order.id, { estado_id: Number(orderStatus.data[0].weB_Status.statusWebID) });
+      switch(orderStatus.data[0].weB_Status.statusWebID){ // 1: pendiente, 2: En Preparacion, 3: Anulado, 4: Confirmado, 5: Completado, 7: Facturado, 8: Pendiente por Retirar
+        case 1:
+          estatu=1; // pendiente
+          break;
+        case 2:
+          estatu=2; // en proceso
+          break;
+        case 3:
+          estatu=6; // rechazado
+          break;
+        case 4:
+          estatu=3; //aprobado
+          break;
+        case 5:
+          estatu=3; //aprobado
+          break;
+        case 7:
+          estatu=3; //aprobado
+          break;
+        case 8:
+          estatu=8; //pendiente por retirar
+          break;
       }
-        
+      await this.purchaseOrderRepository.update(order.id, { estatu_id: estatu });  
     }
   }
-
-  paramsOrderStatus(wisOrderId: number, order_number: number){
-    return {
-      CompanyStoreID: Number(process.env.COMPANY_STORE_ID),
-      OrderID: wisOrderId,
-      OrderNumber: order_number
-    };
-  }
-  
 
 }

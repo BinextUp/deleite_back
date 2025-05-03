@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, PrimaryGeneratedColumn, OneToMany } from "typeorm";
+import { PurchaseOrder } from "../../../../purchase-order/entities/purchase-order.entity";
 
 @Entity('estatu')
 export class Estatu {
@@ -7,4 +8,7 @@ export class Estatu {
 
     @Column({type: 'varchar', length: 100})
     name: string;
+
+    @OneToMany(() => PurchaseOrder, purchaseOrder => purchaseOrder.estatu)
+    purchaseOrders: PurchaseOrder[];
 }

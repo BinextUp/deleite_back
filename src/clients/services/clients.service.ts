@@ -6,7 +6,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { UsersService } from '../../users/services/users.service';
 import { UserActiveInterface } from '../../utils/interfaces/user-active.interface';
-
 @Injectable()
 export class ClientsService {
   constructor(

@@ -6,10 +6,10 @@ export class PaymentMethod {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column()
+    @Column({type: 'varchar', length: 100})
     name: string;
 
-    @Column()
+    @Column({type: 'varchar', length: 255})
     description: string;
 
     @Column({type: 'varchar', length: 255 , nullable: true})
@@ -20,5 +20,5 @@ export class PaymentMethod {
 
     @OneToMany(() => PurchaseOrder, purchaseOrder => purchaseOrder.paymentMethod)
     purchaseOrders: PurchaseOrder[];
-    
+     
 }

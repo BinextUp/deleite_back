@@ -52,7 +52,6 @@ export class CategoriesService {
 
   private searchToken(): string {
     const token = TOKEN_TEMP.length > 0 ? TOKEN_TEMP[0].token : this.asyncLocalStorage.getStore().token;
-    console.log(token);
     return token;
   }
 

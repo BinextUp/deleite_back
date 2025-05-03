@@ -14,7 +14,16 @@ export const estutuSeeds = ()=>{
             name:'cancelado',
         },
         {
+            name:'rechazado',
+        },
+        {
             name:'delivery',
+        },
+        {
+            name:'completado',
+        },
+        {
+            name:'pendiente por retirar',
         },
     ]
 }

@@ -6,13 +6,15 @@ import{userSeeds} from '../../seeds/user/user.seed'
 import { CreateUserDto } from '../../../../users/dto/create.user.dto';
 import { Estatu } from '../estatu-app/estatu.entity';
 import { estutuSeeds } from '../estatu-app/estatu.seed';
-
+import { paymentSeed } from '../payment/payment.seed';
+import { PaymentMethodsService } from '../../../../payment-methods/services/payment-methods.service';
 @Injectable()
 export class SeedsService {
 
     constructor(
         @InjectRepository(Estatu) private readonly estatuRepository: Repository<Estatu>,
         private readonly usersService: UsersService,
+        private readonly paymentMethodsService: PaymentMethodsService
     ){}
 
     async seedUsers(){
@@ -38,9 +40,19 @@ export class SeedsService {
         }
     }
 
+    async seedPaymentMethods(){
+        const paymentMethods = paymentSeed();
+        for(const paymentMethod of paymentMethods){
+            await this.paymentMethodsService.createPaymentSeed(paymentMethod);
+        }
+    }
     async runSeeds() {
         await this.seedUsers();
         await this.seedEstatuApp();
+        await this.seedPaymentMethods();
+
+
+        
         // Puedes agregar más seeds aquí (productos, roles, etc.)
     }
 }
