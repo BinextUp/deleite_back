@@ -1,11 +1,13 @@
 import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
 import { RequestMethod, ValidationPipe } from '@nestjs/common';
 import * as morgan from 'morgan';
 import * as session from 'express-session';
-import 'reflect-metadata';
-import { CORS } from './utils/cors/cors';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import 'reflect-metadata';
+import { AppModule } from './app.module';
+import { CORS } from './utils/cors/cors';
+import { SeedsService } from './utils/database/seeds/services/seeds.service';
+
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -29,6 +31,10 @@ async function bootstrap() {
     }
   }));
 
+  //TODO: Inicializando los Seed
+  const seedsService = app.get(SeedsService);
+  await seedsService.runSeeds();
+
   //TODO: documentacion de la API en swagger
   const config = new DocumentBuilder()
     .setTitle('Documentacion de la API Deleite App')
@@ -36,6 +42,7 @@ async function bootstrap() {
     .setVersion('1.1')
     .addBearerAuth()
     .build();
+
   const documentFactory = () => SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('docs', app, documentFactory, {
     swaggerOptions: {

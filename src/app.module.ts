@@ -15,10 +15,11 @@ import { PurchaseOrderModule } from './purchase-order/purchase-order.module';
 import { DetailPurchaseModule } from './detail-purchase/detail-purchase.module';
 import { CommentsModule } from './comments/comments.module';
 import { DeparmentsModule } from './deparments/deparments.module';
-import database from './utils/config/root-typeorm';
+import database from './utils/database/config/root-typeorm';
 import { LocalStorageMiddleware } from './utils/local-storage/local-storage.middleware';
 import { LocalStorageModule } from './utils/local-storage/local-storage.module';
 import { AppController } from './app.controller';
+import { SeedsModule } from './utils/database/seeds/seeds.module';
 
 @Module({
   imports: [
@@ -42,7 +43,8 @@ import { AppController } from './app.controller';
     DetailPurchaseModule,
     CommentsModule,
     DeparmentsModule,
-    LocalStorageModule
+    LocalStorageModule,
+    SeedsModule
 
   ],
   providers: [],
