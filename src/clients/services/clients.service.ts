@@ -6,6 +6,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { UsersService } from '../../users/services/users.service';
 import { UserActiveInterface } from '../../utils/interfaces/user-active.interface';
+import { CreateImageUserDto } from '../dto/create-image-user.dto';
 @Injectable()
 export class ClientsService {
   constructor(
@@ -56,5 +57,12 @@ export class ClientsService {
   async remove(id: number): Promise<void> {
     await this.findOne(id);
     await this.clientRepository.delete(id);
+  }
+
+  async uploadImage(file: Express.Multer.File) {
+    if (!file) {
+      throw new BadRequestException('No se proporcionó ningún archivo');
+    }
+    return file;
   }
 }

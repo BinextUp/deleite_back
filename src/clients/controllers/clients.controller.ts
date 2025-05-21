@@ -1,17 +1,22 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe, UseInterceptors, UploadedFile } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { ApiBearerAuth } from '@nestjs/swagger';
 import { ClientsService } from '../services/clients.service';
 import { CreateClientDto } from '../dto/create-client.dto';
 import { UpdateClientDto } from '../dto/update-client.dto';
 import { Auth } from '../../auth/decorators/auth.decorator';
 import { Rol } from '../../utils/enums/rol.enum';
 import { Client } from '../entities/client.entity';
-import { ApiBearerAuth } from '@nestjs/swagger';
 import { UserActive } from '../../utils/decorators/user-active.decorator';
 import { UserActiveInterface } from '../../utils/interfaces/user-active.interface';
+import { CreateImageUserDto } from '../dto/create-image-user.dto';
+import { Public } from '../../auth/decorators/public.decorator';
+import { confUploadImage } from '../../utils/database/config/conf-upload-image';
 
-@ApiBearerAuth()
+
+//@ApiBearerAuth()
 @Controller('clients')
-@Auth(Rol.USER)
+//@Auth(Rol.USER)
 export class ClientsController {
   constructor(private readonly clientsService: ClientsService) {}
 
@@ -43,4 +48,13 @@ export class ClientsController {
   async remove(@Param('id', ParseIntPipe) id: number): Promise<void> {
     return this.clientsService.remove(id);
   }
+
+  @Public()
+  @Post('upload-image')
+  @UseInterceptors(FileInterceptor('file', confUploadImage()))
+  uploadImage(@UploadedFile() file: Express.Multer.File) {
+    console.log(file);
+    return this.clientsService.uploadImage(file);
+  }
 }
+
