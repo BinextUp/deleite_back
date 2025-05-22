@@ -29,7 +29,7 @@ export class ApiAuthService {
             );
             return response.data.data;
         } catch (error) {
-            throw new BadRequestException('Error al iniciar sesion  de la API externa');
+            throw new BadRequestException('Error al iniciar sesion en la api externa');
         }
     }
 
@@ -45,7 +45,7 @@ export class ApiAuthService {
             );
             return response.data.data;
         } catch (error) {
-            throw new BadRequestException('Error al iniciar sesion  de la API externa');
+            throw new BadRequestException('Error a refrescar el token en la api externa');
         }
     }
 }

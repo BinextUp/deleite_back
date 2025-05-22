@@ -34,6 +34,7 @@ export class AuthController {
     @Public()
     @Post('register')
     async register(@Body() authUser: CreateAuthUserDto) {
+      console.log('entro aqui',authUser)
         const user = await this.authService.createUser(authUser);
         return user;
     }
