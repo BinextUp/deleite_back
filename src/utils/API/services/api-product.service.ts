@@ -52,6 +52,19 @@ export class ApiProductService {
         }
     }
 
+    async getApiSearchProductInventoryByWISID(token: string, params: any): Promise<any> {
+        try {
+            this.requestConfig.params = params;
+            this.requestConfig.headers.Authorization = `Bearer ${token}`;
+            const response = await firstValueFrom(this.httpService.get(
+                `${process.env.API_PRODUCT_WIS}/api/inventory/productinventory`,
+                this.requestConfig));
+            return response.data;
+        } catch (error) {
+            throw new BadRequestException('Error al obtener el producto del inventario  de la API externa de Wis');
+        }
+    }
+
     async createApiPurchaseOrder(token: string, params: any): Promise<any> {
         try {
             const data = JSON.stringify(params);

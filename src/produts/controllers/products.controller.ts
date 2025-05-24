@@ -82,6 +82,13 @@ export class ProductsController {
       return this.productsService.getApiSearchProductInventoryByWIS(this.inicilizePage(pageProductDto));
     }
 
+    @Public()
+    @Get('api-products-inventory-wis-id/:id')
+    async getApiProductInventoryByWISID(@Param('id', ParseIntPipe) id: number): Promise<any> {
+      return this.productsService.getApiSearchProductInventoryByWISID(id);
+    }
+
+
     inicilizePage(pageProductDto: PageProductDto){
       if(pageProductDto.Page===0) {
         pageProductDto = {

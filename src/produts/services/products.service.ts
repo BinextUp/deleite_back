@@ -11,7 +11,7 @@ import { ApiProductService } from '../../utils/API/services/api-product.service'
 import { ApiDollarService } from '../../utils/API/services/api-dollar.service';
 import { TOKEN_TEMP } from '../../utils/token-temp/token-temp';
 import { PageProductDto } from '../dto/page-product.dto';
-import { paramsProduct, paramsProductInventory } from 'src/utils/api-params/api-params';
+import { paramsProduct, paramsProductInventory, paramsProductInventoryID } from 'src/utils/api-params/api-params';
 
 @Injectable()
 export class ProductsService {
@@ -94,6 +94,17 @@ export class ProductsService {
     if(!value) {
       const products_inventory = await this.apiProductService.getApiSearchProductInventoryByWIS(this.searchToken(), paramsProductInventory(pageProductDto));
       await this.cacheManager.set(`products-inventory-Page:${pageProductDto.Page}`, products_inventory);
+      return products_inventory;
+    }
+    return value;
+  }
+
+  async getApiSearchProductInventoryByWISID(id: number): Promise<any> {
+    
+    const value = await this.cacheManager.get(`products-inventory-id:${id}`);
+    if(!value) {
+      const products_inventory = await this.apiProductService.getApiSearchProductInventoryByWISID(this.searchToken(), paramsProductInventoryID(id));
+      await this.cacheManager.set(`products-inventory-id:${id}`, products_inventory);
       return products_inventory;
     }
     return value;

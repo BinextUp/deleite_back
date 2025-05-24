@@ -36,6 +36,14 @@ export const paramsProductInventory = (pageProductDto: PageProductDto)=> {
     }
 };
 
+export const paramsProductInventoryID = (id: number)=> {
+    return {
+        CompanyStoreID:Number(process.env.COMPANY_STORE_ID),
+        ProductID:id,
+        Page:1
+    }
+};
+
 export const paramsProduct = (pageProductDto: PageProductDto)=> {
     return {
         Page:pageProductDto.Page,
