@@ -6,6 +6,7 @@ import { CreateCartDto } from '../dto/create-cart.dto';
 import { UpdateCartDto } from '../dto/update-cart.dto';
 import { Cart } from '../entities/cart.entity';
 import { UserActiveInterface } from '../../utils/interfaces/user-active.interface';
+import { SessionCartDto } from '../dto/session-cart.dto';
 
 
 @Injectable()
@@ -18,24 +19,9 @@ export class CartsService {
 
   async createSession(createCartDto: CreateCartDto, session: Record<string, any>): Promise<Cart> {
     
-    if(!session){
-      throw new BadRequestException('No se ha encontrado un usuario ni una sesion');
+    if(createCartDto.session_id==null){
+      createCartDto.session_id = session.id;
     }
-    createCartDto.session_id = session.id;
-    const cart = await this.cartRepository.save(createCartDto);
-    if(!cart) {
-      throw new BadRequestException('Error al agregar el producto al carrito');
-    }
-    return cart;
-  }
-  async createToken(createCartDto: CreateCartDto, user: UserActiveInterface, session: Record<string, any>): Promise<any> {
-    
-    if(!user && !session){
-      throw new BadRequestException('No se ha encontrado un usuario ni una sesion');
-    }
-    await this.updateUserCart(user, session);
-    createCartDto.user_id = user.id;
-    createCartDto.session_id = session.id;
     const cart = await this.cartRepository.save(createCartDto);
     if(!cart) {
       throw new BadRequestException('Error al agregar el producto al carrito');
@@ -43,8 +29,22 @@ export class CartsService {
     return cart;
   }
 
-  async updateUserCart(user: UserActiveInterface, session: Record<string, any>): Promise<any> {
-    const carts = await this.findAllCartsActiveBySession(session);
+  async createToken(createCartDto: CreateCartDto, user: UserActiveInterface): Promise<any> {
+    
+    if(!user){
+      throw new BadRequestException('No se ha encontrado un usuario ni una sesion');
+    }
+    await this.updateUserCart(user, createCartDto);
+    createCartDto.user_id = user.id;
+    const cart = await this.cartRepository.save(createCartDto);
+    if(!cart) {
+      throw new BadRequestException('Error al agregar el producto al carrito');
+    }
+    return cart;
+  }
+
+  async updateUserCart(user: UserActiveInterface, createCartDto:  CreateCartDto): Promise<any> {
+    const carts = await this.findAllCartsActiveBySession(createCartDto);
     if(carts.length > 0){
       for(const cart of carts){
         cart.user_id = user.id;
@@ -55,11 +55,18 @@ export class CartsService {
 
   }
  
-  async findAllCartsActiveBySession( session: Record<string, any>): Promise<Cart[]> {
-    if(!session){
+  async findAllCartsActiveBySession( createCartDto: CreateCartDto,): Promise<Cart[]> {
+    if(!createCartDto){
       throw new BadRequestException('No se ha encontrado un usuario ni una sesion');
     }
-    return this.cartRepository.find({ where: { session_id: session.id, status: true } });
+    return this.cartRepository.find({ where: { session_id: createCartDto.session_id, status: true } });
+  }
+
+  async findAllActiveBySession( sessionCartDto: SessionCartDto): Promise<Cart[]> {
+    if(!sessionCartDto){
+      throw new BadRequestException('No se ha encontrado un usuario ni una sesion');
+    }
+    return this.cartRepository.find({ where: { session_id: sessionCartDto.session, status: true } });
   }
   
   
@@ -100,8 +107,8 @@ export class CartsService {
     return this.cartRepository.delete(id);
   }
 
-  async removeAllSession(session: Record<string, any>) {
-    const carts = await this.findAllCartsActiveBySession(session);
+  async removeAllSession(session: SessionCartDto) {
+    const carts = await this.findAllActiveBySession(session);
 
     for(const cart of carts){
       await this.cartRepository.delete(cart.id);

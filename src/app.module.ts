@@ -45,7 +45,6 @@ import { SeedsModule } from './utils/database/seeds/seeds.module';
     DeparmentsModule,
     LocalStorageModule,
     SeedsModule
-
   ],
   providers: [],
   controllers: [AppController]
