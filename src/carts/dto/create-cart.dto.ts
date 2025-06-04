@@ -24,5 +24,5 @@ export class CreateCartDto {
 
     @IsString()
     @IsOptional()
-    session_id: string | null;
+    session_id: string;
 }
