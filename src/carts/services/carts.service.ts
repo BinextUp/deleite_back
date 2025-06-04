@@ -19,7 +19,7 @@ export class CartsService {
 
   async createSession(createCartDto: CreateCartDto, session: Record<string, any>): Promise<Cart> {
     
-    if(createCartDto.session_id==''){
+    if(createCartDto.session_id==='null'){
       createCartDto.session_id = session.id;
     }
     const cart = await this.cartRepository.save(createCartDto);
