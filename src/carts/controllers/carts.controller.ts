@@ -19,6 +19,8 @@ export class CartsController {
   @Public()
   @Post('create-session')
   async createSession(@Body() createCartDto: CreateCartDto, @Session() session: Record<string, any>): Promise<Cart> {
+    console.log('createCartDto',createCartDto);
+    
     return this.cartsService.createSession(createCartDto,session);
   }
 
@@ -39,10 +41,7 @@ export class CartsController {
   @Public()
   @Post('user-session')
   async findAllActiveBySession(@Body() sessionCartDto: SessionCartDto): Promise<Cart[]> {
-    
-    //session.id = sessionCartDto.session;
-    console.log('sessionCartDto',sessionCartDto);
-    
+
     return this.cartsService.findAllActiveBySession(sessionCartDto);
   }
 

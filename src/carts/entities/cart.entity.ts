@@ -12,7 +12,7 @@ export class Cart {
     @Column({type: 'int'})
     cantidad: number;
 
-    @Column({type: 'decimal'})
+    @Column({type: 'decimal', precision: 10, scale: 2})
     precio: number;
 
     @Column({type: 'timestamp', default: () => 'CURRENT_TIMESTAMP'})
@@ -20,6 +20,12 @@ export class Cart {
     
     @Column({type: 'int'})
     product_id: number;
+
+    @Column({type: 'varchar', nullable: true})
+    title: string;
+
+    @Column({type: 'varchar', nullable: true})
+    description: string;
 
     @ManyToOne(() => User, (user) => user.carts)
     @JoinColumn({name: 'user_id', referencedColumnName: 'id'})
