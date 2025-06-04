@@ -22,7 +22,6 @@ export class CreateCartDto {
     @IsOptional()
     user_id: number;
 
-    @IsOptional()
     @IsString()
     session_id: string;
 }
