@@ -43,6 +43,14 @@ export class CartsService {
     return cart;
   }
 
+  async createSessionToken(sessionCartDto: SessionCartDto, user: UserActiveInterface): Promise<Cart[]> {
+    
+    const createCartDto = new CreateCartDto();
+    createCartDto.session_id = sessionCartDto.session;
+    const carts= await this.updateUserCart(user, createCartDto);
+    return carts;
+  }
+
   async updateUserCart(user: UserActiveInterface, createCartDto:  CreateCartDto): Promise<any> {
     const carts = await this.findAllCartsActiveBySession(createCartDto);
     if(carts.length > 0){
@@ -52,7 +60,6 @@ export class CartsService {
       }
     }
     return carts;
-
   }
  
   async findAllCartsActiveBySession( createCartDto: CreateCartDto,): Promise<Cart[]> {

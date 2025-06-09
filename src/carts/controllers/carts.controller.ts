@@ -19,8 +19,6 @@ export class CartsController {
   @Public()
   @Post('create-session')
   async createSession(@Body() createCartDto: CreateCartDto, @Session() session: Record<string, any>): Promise<Cart> {
-    console.log('createCartDto',createCartDto);
-    
     return this.cartsService.createSession(createCartDto,session);
   }
 
@@ -33,6 +31,15 @@ export class CartsController {
 
   @ApiBearerAuth()
   @Auth(Rol.USER)
+  @Post('create-session-token')
+  async createSessionToken(@Body() sessionCartDto: SessionCartDto, @UserActive() user: UserActiveInterface): Promise<any> {
+    console.log(sessionCartDto);
+    console.log(user);
+    return this.cartsService.createSessionToken(sessionCartDto, user);
+  }
+
+  @ApiBearerAuth()
+  @Auth(Rol.USER)
   @Get('user-active')
   async findAllCartsActiveByUser(@UserActive() user: UserActiveInterface,@Session() session: Record<string, any>): Promise<Cart[]> {
     return this.cartsService.findAllCartsActiveByUser(user, session);
@@ -41,10 +48,8 @@ export class CartsController {
   @Public()
   @Post('user-session')
   async findAllActiveBySession(@Body() sessionCartDto: SessionCartDto): Promise<Cart[]> {
-
     return this.cartsService.findAllActiveBySession(sessionCartDto);
   }
-
 
   @Public()
   @Get('all')
@@ -62,7 +67,6 @@ export class CartsController {
   async updateProduct(@Param('id', ParseIntPipe) id: number, @Body() updateCartDto: UpdateCartDto): Promise<Cart> {
     return this.cartsService.updateProduct(id, updateCartDto);
   }
-
 
   @Delete('delete-product/:id')
   async remove(@Param('id', ParseIntPipe) id: number) {
