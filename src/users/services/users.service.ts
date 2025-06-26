@@ -1,10 +1,10 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { User } from '../entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { IsNull, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { CreateUserDto } from '../dto/create.user.dto';
 import { hashPassword } from 'src/utils/hash/hash';
-import { isNull } from 'util';
+
 
 @Injectable()
 export class UsersService {

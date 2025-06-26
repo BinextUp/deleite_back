@@ -73,6 +73,14 @@ export class PurchaseOrderService {
     return purchaseOrder;
   }
 
+  async findOneToken(userActive: UserActiveInterface): Promise<PurchaseOrder[]> {
+    const purchaseOrder = await this.purchaseOrderRepository.find({ where: { user_id:userActive.id }, relations: ['paymentMethod', 'user','detailPurchases','estatu'] });
+    if(!purchaseOrder) {
+      throw new BadRequestException('Orden de compra no encontrada');
+    }
+    return purchaseOrder;
+  }
+
   update(id: number, updatePurchaseOrderDto: UpdatePurchaseOrderDto) {
     return `This action updates a #${id} purchaseOrder`;
   }
@@ -127,7 +135,7 @@ export class PurchaseOrderService {
     });
   }
 
-  @Cron('*/5 * * * *') 
+  //@Cron('*/5 * * * *') 
   async updateOrdersStatus() {
     console.log('Actualizando estados de las ordenes de compra');
     const orders = await this.getOrdersStatus();

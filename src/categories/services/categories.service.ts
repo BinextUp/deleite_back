@@ -68,10 +68,12 @@ export class CategoriesService {
   async apiGetProductByCategory(id: number, pageCatSubCatDto: PageCatSubCatDto):Promise<any> {
     const categoryCache = await this.cacheManager.get(`category-${id}-Page:${pageCatSubCatDto.Page}`);
     if(!categoryCache){
+      console.log('Fue a buscarlo en la api')
       const category = await this.apiProductService.getApiSearchProductInventoryByWIS(this.searchToken(), paramsCategory(id,pageCatSubCatDto));
       await this.cacheManager.set(`category-${id}-Page:${pageCatSubCatDto.Page}`, category);
       return category;
     }
+    console.log('en el cache')
     return categoryCache;
   }
 

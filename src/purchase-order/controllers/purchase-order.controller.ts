@@ -33,6 +33,10 @@ export class PurchaseOrderController {
   async findOne(@Param('id', ParseIntPipe) id: number): Promise<any> {
     return this.purchaseOrderService.findOne(id);
   }
+  @Get('searchByUserId')
+  async findOneToken(@UserActive() userActive: UserActiveInterface):Promise<PurchaseOrder[]>{
+    return this.purchaseOrderService.findOneToken(userActive);
+  }
 
   @Patch('update/:id')
   update(@Param('id') id: string, @Body() updatePurchaseOrderDto: UpdatePurchaseOrderDto) {

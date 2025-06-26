@@ -33,8 +33,6 @@ export class CartsController {
   @Auth(Rol.USER)
   @Post('create-session-token')
   async createSessionToken(@Body() sessionCartDto: SessionCartDto, @UserActive() user: UserActiveInterface): Promise<any> {
-    console.log(sessionCartDto);
-    console.log(user);
     return this.cartsService.createSessionToken(sessionCartDto, user);
   }
 
@@ -42,6 +40,10 @@ export class CartsController {
   @Auth(Rol.USER)
   @Get('user-active')
   async findAllCartsActiveByUser(@UserActive() user: UserActiveInterface,@Session() session: Record<string, any>): Promise<Cart[]> {
+    console.log('User activo',user)
+    console.log(session)
+    
+    
     return this.cartsService.findAllCartsActiveByUser(user, session);
   }
 
@@ -68,8 +70,9 @@ export class CartsController {
     return this.cartsService.updateProduct(id, updateCartDto);
   }
 
+  @Public()
   @Delete('delete-product/:id')
-  async remove(@Param('id', ParseIntPipe) id: number) {
+  async remove(@Param('id', ParseIntPipe) id: number):Promise<any> {
     return this.cartsService.remove(id);
   }
 

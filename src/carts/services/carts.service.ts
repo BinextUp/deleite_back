@@ -111,7 +111,8 @@ export class CartsService {
     if(!cart) {
       throw new BadRequestException('Carrito no encontrado');
     }
-    return this.cartRepository.delete(id);
+    this.cartRepository.delete(id);
+    return{"status":200,"message":"Producto eliminado"}
   }
 
   async removeAllSession(session: SessionCartDto) {

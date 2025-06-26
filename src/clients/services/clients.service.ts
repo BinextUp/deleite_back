@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, NotAcceptableException } from '@nestjs/common';
 import { CreateClientDto } from '../dto/create-client.dto';
 import { UpdateClientDto } from '../dto/update-client.dto';
 import { Client } from '../entities/client.entity';
@@ -44,7 +44,7 @@ export class ClientsService {
   async findOneByUserId(id: number): Promise<Client> {
     const client = await this.clientRepository.findOne({ where: { user_id: id }, relations: ['user'] });
     if(!client) {
-      throw new BadRequestException('Este usuario no tiene un perfil');
+      throw new NotAcceptableException('Este usuario no tiene un perfil');
     }
     return client;
   }

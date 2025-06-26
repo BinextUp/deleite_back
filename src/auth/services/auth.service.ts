@@ -25,11 +25,16 @@ export class AuthService {
         };
     }
 
-    async createUser(user: CreateAuthUserDto): Promise<User> {
+    async createUser(user: CreateAuthUserDto) {
         const userExists = await this.usersService.findByEmail(user.email);
         if (userExists) {
             throw new NotAcceptableException('Este Email ya existe');
         }
-        return this.usersService.createUser(user);
+        const userr= await  this.usersService.createUser(user)
+        const payload = { email: userr.email, id: userr.id, role: userr.role };
+        return {
+            token: await this.jwtService.signAsync(payload),
+            user: userr
+        };
     }
 }
