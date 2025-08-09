@@ -64,38 +64,33 @@ export class ProductsController {
   async getApiProductByWIS(@Body() pageProductDto: PageProductDto): Promise<any> {
     return this.productsService.getApiProductByWIS(this.inicilizePage(pageProductDto));
   }
-  //TODO:Este codigo a través de Object.keys(body) obtengo los indeces del json, para armar los parametros del api 
-  /*
+ 
   @Public()
-  @Get('api-products-inventory-wis')
-  async getApiProductInventoryByWIS(@Body() body: Record<string, any>): Promise<any> {
-    if(typeof body === 'undefined' || Object.keys(body).length === 0) {
-      body = {
+  @Patch('api-products-inventory-wis')
+  async getApiProductInventoryByWIS(@Body() pageProductDto: PageProductDto): Promise<any> {
+    return this.productsService.getApiSearchProductInventoryByWIS(this.inicilizePage(pageProductDto));
+  }
+
+  @Public()
+  @Get('api-products-inventory-wis-id/:id')
+  async getApiProductInventoryByWISID(@Param('id', ParseIntPipe) id: number): Promise<any> {
+    return this.productsService.getApiSearchProductInventoryByWISID(id);
+  }
+
+
+  inicilizePage(pageProductDto: PageProductDto){
+    if(pageProductDto.Page===0) {
+      pageProductDto = {
         Page: 1
       };
     }
-    return this.productsService.getApiSearchProductInventoryByWIS(body,Object.keys(body));
-  }*/
-    @Public()
-    @Patch('api-products-inventory-wis')
-    async getApiProductInventoryByWIS(@Body() pageProductDto: PageProductDto): Promise<any> {
-      return this.productsService.getApiSearchProductInventoryByWIS(this.inicilizePage(pageProductDto));
-    }
+    return pageProductDto;
+  }
 
-    @Public()
-    @Get('api-products-inventory-wis-id/:id')
-    async getApiProductInventoryByWISID(@Param('id', ParseIntPipe) id: number): Promise<any> {
-      return this.productsService.getApiSearchProductInventoryByWISID(id);
-    }
-
-
-    inicilizePage(pageProductDto: PageProductDto){
-      if(pageProductDto.Page===0) {
-        pageProductDto = {
-          Page: 1
-        };
-      }
-      return pageProductDto;
-    }
+  @Public()
+  @Get('search-product/:search')
+  async getApiSearchProductInventoryByWIS(@Param('search') search: string, @Body() pageProductDto: PageProductDto): Promise<any> {
+    return this.productsService.searchProductInventoryByWIS(search, this.inicilizePage(pageProductDto));
+  }
 
 }

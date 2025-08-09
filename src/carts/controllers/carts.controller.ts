@@ -10,6 +10,7 @@ import { Public } from '../../auth/decorators/public.decorator';
 import { Auth } from '../../auth/decorators/auth.decorator';
 import { Rol } from '../../utils/enums/rol.enum';
 import { SessionCartDto } from '../dto/session-cart.dto';
+import { StatusCartDto } from '../dto/status-cart.dto';
 
 
 @Controller('carts')
@@ -42,8 +43,6 @@ export class CartsController {
   async findAllCartsActiveByUser(@UserActive() user: UserActiveInterface,@Session() session: Record<string, any>): Promise<Cart[]> {
     console.log('User activo',user)
     console.log(session)
-    
-    
     return this.cartsService.findAllCartsActiveByUser(user, session);
   }
 
@@ -94,4 +93,12 @@ export class CartsController {
   async cleanerCart():Promise<Cart[]>{
     return this.cartsService.cleanerCart();
   }
+
+  @ApiBearerAuth()
+  @Auth(Rol.USER)
+  @Patch('status-carts')
+  async updateStatus(@Body() statusCartDto: StatusCartDto[]): Promise<any> {
+    return this.cartsService.updateStatus(statusCartDto);
+  }
+
 }

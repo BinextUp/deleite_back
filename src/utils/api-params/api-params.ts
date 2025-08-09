@@ -68,6 +68,15 @@ export const paramsStatusOrder = (wisOrderId: number, order_number: number)=> {
     }
 }
 
+export const paramsProductInventorySearch = (search: string, pageProductDto: PageProductDto)=> {
+    return {
+        CompanyStoreID:Number(process.env.COMPANY_STORE_ID),
+        ItemsPerPage:20,
+        Page:pageProductDto.Page,
+        Description:search
+    }
+};
+
 export const paramsCreatePurchaseOrder = (params: CreatePurchaseOrderDto, perfilUser: Client)=> {
     return {
     companyStoreID: Number(process.env.COMPANY_STORE_ID),

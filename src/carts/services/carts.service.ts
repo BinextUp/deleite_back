@@ -7,6 +7,7 @@ import { UpdateCartDto } from '../dto/update-cart.dto';
 import { Cart } from '../entities/cart.entity';
 import { UserActiveInterface } from '../../utils/interfaces/user-active.interface';
 import { SessionCartDto } from '../dto/session-cart.dto';
+import { StatusCartDto } from '../dto/status-cart.dto';
 
 
 @Injectable()
@@ -104,6 +105,14 @@ export class CartsService {
       throw new BadRequestException('Problemas al actualizar el carrito');
     }
     return updatedCart;
+  }
+
+  async updateStatus(statusCartDto: StatusCartDto[]): Promise<any> {
+
+    for(const status of statusCartDto){
+      await this.cartRepository.update(status.id, {status: status.status});
+    }
+    return{"status":200,"message":"Status actualizado"}
   }
 
   async remove(id: number) {

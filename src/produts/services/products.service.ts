@@ -11,7 +11,7 @@ import { ApiProductService } from '../../utils/API/services/api-product.service'
 import { ApiDollarService } from '../../utils/API/services/api-dollar.service';
 import { TOKEN_TEMP } from '../../utils/token-temp/token-temp';
 import { PageProductDto } from '../dto/page-product.dto';
-import { paramsProduct, paramsProductInventory, paramsProductInventoryID } from 'src/utils/api-params/api-params';
+import { paramsProduct, paramsProductInventory, paramsProductInventoryID, paramsProductInventorySearch } from '../../utils/api-params/api-params';
 
 @Injectable()
 export class ProductsService {
@@ -55,7 +55,7 @@ export class ProductsService {
       throw new BadRequestException('Id no proporcionado');
     }
     await this.findOne(id);
-    return this.productRepository.update(id, updateProductDto).then(() => this.findOne(id));
+    return await this.productRepository.update(id, updateProductDto).then(() => this.findOne(id));
   }
 
   async remove(id: number): Promise<void> {
@@ -70,11 +70,11 @@ export class ProductsService {
   }
  
   async getApiProducts(): Promise<any> {
-    return this.apiProductService.ApiGetProducts();
+    return await this.apiProductService.ApiGetProducts();
   }
 
   async getApiDollars(): Promise<any> {
-    return this.apiDollarService.ApiGetDollars();
+    return await this.apiDollarService.ApiGetDollars();
   }
 
   async getApiProductByWIS(pageProductDto: PageProductDto): Promise<any> {
@@ -108,5 +108,9 @@ export class ProductsService {
       return products_inventory;
     }
     return value;
+  }
+
+  async searchProductInventoryByWIS(search: string, pageProductDto: PageProductDto): Promise<any> {
+    return await this.apiProductService.getApiSearchProductInventoryByWIS(this.searchToken(), paramsProductInventorySearch(search,pageProductDto));
   }
 }

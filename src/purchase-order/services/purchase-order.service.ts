@@ -37,8 +37,9 @@ export class PurchaseOrderService {
 
     createPurchaseOrderDto.user_id = user.id;
     createPurchaseOrderDto.order_number = await this.numberOrderCorelative();
-
+    console.log('createPurchaseOrderDto', createPurchaseOrderDto);
     const newOrder = await this.purchaseOrderRepository.save(createPurchaseOrderDto);
+    
     if(!newOrder) {
       throw new BadRequestException('Error al crear la orden de compra de deleite');
     }
@@ -46,6 +47,8 @@ export class PurchaseOrderService {
     await this.detailPurchases(createPurchaseOrderDto, newOrder.id);
     const updatePurchaseOrder = await this.updatePurchaseOrder(newOrder.id, purchaseOrderWis);
     return updatePurchaseOrder;
+    
+   //return newOrder;
   }
 
   async CALL_API_WIS(createPurchaseOrderDto: CreatePurchaseOrderDto, user: UserActiveInterface, id: number): Promise<any> {
