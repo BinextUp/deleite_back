@@ -43,6 +43,7 @@ export class ApiProductService {
         try {
             this.requestConfig.params = params;
             this.requestConfig.headers.Authorization = `Bearer ${token}`;
+            console.log(this.requestConfig);
             const response = await firstValueFrom(this.httpService.get(
                 `${process.env.API_PRODUCT_WIS}/api/inventory/productinventory`,
                 this.requestConfig));
@@ -83,6 +84,7 @@ export class ApiProductService {
         try {
             this.requestConfig.headers.Authorization = `Bearer ${token}`;
             this.requestConfig.params = params;
+            console.log(this.requestConfig);
             const response = await firstValueFrom(this.httpService.get(
                 `${process.env.API_WEBSTORE_WIS}/api/order`,
                 this.requestConfig));

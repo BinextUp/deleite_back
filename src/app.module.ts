@@ -53,7 +53,7 @@ export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(LocalStorageMiddleware)
-      .forRoutes('*'); // Se aplica a todas las rutas
+      .forRoutes("*"); // Se aplica a todas las rutas
   }
 }
 

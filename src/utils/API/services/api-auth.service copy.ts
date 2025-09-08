@@ -16,17 +16,11 @@ export class ApiAuthService {
         "password": process.env.PASS_WIS,
         "CompanyStoreID": process.env.COMPANY_STORE_ID
     });
-
-    private  currentToken: { 
-        token: string; 
-        fecha_creacion: string; 
-        fecha_expiracion: string 
-    } | null = null;
+        
 
     constructor(private readonly httpService: HttpService) {}
 
     async signInApiExterno(): Promise<any> {
-        console.log('data', this.data);
         try {
             const response = await firstValueFrom(
                 this.httpService.post(`${process.env.API_AUTH_WIS}/api/authentication/login`, 
@@ -55,28 +49,5 @@ export class ApiAuthService {
         }
     }
 
-    async getValidToken(): Promise<any> {
-        const isTokenExpired = this.currentToken && await this.ValidarFechaHoraToken(this.currentToken.fecha_expiracion);
     
-        if (!this.currentToken || isTokenExpired) {
-          // Pide un nuevo token si no existe o si está vencido
-          const {token, dateCreateToken, dateExpiredToken}   = await this.signInApiExterno();
-          this.currentToken = {
-            token: token,
-            fecha_creacion: dateCreateToken,
-            fecha_expiracion: dateExpiredToken
-          };
-          console.log('Nuevo token generado:', this.currentToken.token);
-        }
-        return this.currentToken;
-    }
-    
-    private async ValidarFechaHoraToken(fecha_expiracion: string): Promise<boolean> {
-        const fechaApi = new Date(fecha_expiracion);
-        const fecha_actual = new Date();
-        // Añadir un buffer de tiempo para evitar tokens que caduquen justo después de ser usados.
-        return fecha_actual > fechaApi; 
-    }
-
-
 }
